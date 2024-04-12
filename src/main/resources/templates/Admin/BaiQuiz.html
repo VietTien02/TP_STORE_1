@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+
+  <div class="admin-qltk-right-bot">
+    <div id="w33" class="w3-bar">
+      <button
+              class="w3-bar-item w3-button active"
+              onclick="openCity('quanLy')">
+        Quản Lý
+      </button>
+      <button
+              class="w3-bar-item w3-button"
+              onclick="openCity('danhSach')">
+        Danh Sách
+      </button>
+    </div>
+
+    <div th:unless="${edit}">
+      <div id="quanLy" class="w3-container city">
+
+          <h1 style="text-align: center">Thêm Bài Quiz</h1>
+          <div class="quanly_items-chuong">
+            <div class="quanly_items-rs">
+
+
+
+            </div>
+          </div>
+          <div class="quanLy-btns">
+           <a href="/admin/quiz-add"> <button >Create</button></a>
+
+
+          </div>
+
+      </div>
+
+    </div>
+
+    <div id="danhSach" class="w3-container city" style="display: none">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm Theo Khóa Học..." oninput="search()">
+      <table id="customers">
+        <tr>
+          <th>STT</th>
+          <th>Khóa Học</th>
+          <th>Chương</th>
+          <th>Nội dung</th>
+          <th>Hành Động</th>
+        </tr>
+        <tr th:each="p : ${accountPage.quizList}">
+          <td th:text="${p.id}"</td>
+          <td th:text="${p.content.chapter.course.tps_Name}"></td>
+
+          <td th:text="${p.content.chapter.tps_title}"></td>
+          <td th:text="${p.content.tps_title}"></td>
+          <td>
+
+            <!--            <ion-icon name="trash-outline"></ion-icon>-->
+            <a th:href="@{|/admin/quiz-add/edit?id=${p.id}|}">  <ion-icon name="create-outline"></ion-icon></a>
+          </td>
+        </tr>
+      </table>
+      <div class="pagination" style="padding: 40px 300px">
+        <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+        <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+        <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    function validateForm() {
+      var contentSelect = document.getElementById("content-select");
+      var courseSelect = document.getElementById("course-select");
+      var chapterSelect = document.getElementById("chapter-select");
+      if (courseSelect.value == "") {
+        alert("Vui lòng chọn Khóa Học");
+        return false;
+      }
+      if (chapterSelect.value == "") {
+        alert("Vui lòng Chương");
+        return false;
+      }
+      if (contentSelect.value == "") {
+        alert("Vui lòng chọn nội dung");
+        return false;
+      }
+    }
+  </script>
+  <script>
+    function resetChapterSelect() {
+      console.log("hh")
+      document.getElementById("chapter-select").value = "";
+    }
+
+    function resetContentSelect() {
+      document.getElementById("content-select").selectedIndex = 0;
+    }
+
+    function resetForm() {
+      document.getElementById("course-select").selectedIndex = 0;
+      document.getElementById("chapter-select").selectedIndex = 0;
+      document.getElementById("content-select").selectedIndex = 0;
+    }
+
+    function validateForm() {
+      // thêm code xử lý validate form ở đây
+    }
+  </script>
+
+  <script th:inline="javascript">
+    function loadPage(page, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      $.ajax({
+        url: '/admin/quiz',
+        data: {
+          page: page
+        },
+        success: function(response) {
+          // Cập nhật nội dung danh sách tài khoản
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+        },
+        error: function(xhr, status, error) {
+          console.log("Error: " + error);
+        }
+      });
+    }
+  </script>
+  <script>
+    function search() {
+      var searchInput = document.getElementById("searchInput");
+      var search = searchInput.value;
+      $.ajax({
+        url: '/admin/quiz',
+        type: 'GET',
+        data: {
+          page: 1,
+          keyword: search
+        },
+        success: function(response) {
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+
+          // Cập nhật phân trang
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+
+  </script>
+</div>
+</body>
+</html>

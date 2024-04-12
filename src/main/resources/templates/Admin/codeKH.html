@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+
+  <div class="admin-qltk-right-bot">
+    <div id="w33" class="w3-bar">
+      <button
+              class="w3-bar-item w3-button active"
+              onclick="openCity('quanLy')">
+        Quản Lý
+      </button>
+      <button
+              class="w3-bar-item w3-button"
+              onclick="openCity('danhSach')">
+        Danh Sách
+      </button>
+    </div>
+    <div th:if="${edit}">
+      <form method="post">
+    <div id="quanLy" class="w3-container city">
+      <h1 style="text-align: center">Quản Lý Mã Code</h1><!-- add this code to your HTML template -->
+
+      <div th:if="${param.success}" class="alert alert-success" role="alert">
+        <p th:text="${param.success}"></p>
+      </div>
+
+
+      <div class="quanly_items-chuong">
+        <div class="quanly_items-rs">
+          <div class="quanly_item-r">
+
+            <label for="">Tên Tài Khoản</label>
+            <input th:value="${edit.account.tps_Username}"
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder="Nhập Tên Tài Khoản...." readonly/>
+            <input type="hidden" th:value="${edit.id}" name="id">
+          </div>
+          <div class="quanly_item-r">
+            <label for="">Mã Code</label>
+            <input th:value="${edit.code}"
+                    type="text"
+                    name="code"
+                    id=""
+                    placeholder="Nhập Mã Code...." required/>
+          </div>
+          <div class="quanly_item-r">
+            <div class="custom-select" style="margin: 0;">
+              <select name="course" required>
+                <option value="">--Chọn Khóa Học --</option>
+                <option th:each="courses: ${courses}"
+                th:value="${courses.tps_id}" th:text="${courses.tps_Name}" th:selected="${edit.courseCode.tps_id ==courses.tps_id}" >
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="quanly_item-r">
+            <label for="">Số Lượng</label>
+            <input th:value="${edit.quantity}"
+
+                    name="quantity"
+                    id=""
+                    placeholder="Nhập Số Lượng...."  type="number" min="0" required/>
+          </div>
+
+          <div class="quanly_items-r-radio">
+            <label for="">Kích Hoạt Code: </label>
+
+            <div class="quanly_item-r-radio">
+              <input type="radio" id="html" name="radio" th:value="true" th:checked="${edit.status==true}" />
+              <label for="html">Kích Hoạt</label>
+            </div>
+
+            <div class="quanly_item-r-radio">
+              <input type="radio" id="css" name="radio" th:value="false" th:checked="${edit.status ==false}" />
+              <label for="css">Chưa Kích Hoạt</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quanLy-btns">
+        <button onclick="confirmUpdate()" formaction="/admin/code-khoahoc/save">Cập Nhật</button>
+        <a th:href="@{|/admin/code-khoahoc/edit?idcode=${edit.id}|}"><button type="button">Đặt Lại</button></a>
+        <a href="/admin/code-khoahoc"><button type="button">Thêm Mới</button></a>
+      </div>
+    </div>
+
+
+
+      </form>
+      <script>
+        function confirmUpdate() {
+          if (confirm("Bạn có muốn update?")) {
+            // User clicked OK
+
+          } else {
+            // User clicked Cancel
+            event.preventDefault(); // Stop the form from submitting
+          }
+        }
+
+      </script>
+    </div>
+  <div th:unless="${edit}">
+    <div id="quanLy" class="w3-container city">
+      <form method="post">
+      <h1 style="text-align: center; margin-bottom: 30px;">Quản Lý Mã Code</h1>
+      <div class="quanly_items-chuong">
+        <div class="quanly_items-rs">
+<!--          <div class="quanly_item-r">-->
+<!--            <label for="">Tên Tài Khoản</label>-->
+<!--            <input-->
+<!--                    type="text"-->
+<!--                    name="username"-->
+<!--                    id=""-->
+<!--                    placeholder="Nhập Tên Tài Khoản...." />-->
+<!--          </div>-->
+
+          <div class="quanly_item-r">
+            <div class="custom-select" style="margin: 0;">
+              <select name="course" required>
+                <option value="">--Chọn Khóa Học --</option>
+                <option
+                        th:each="courses : ${courses}"
+                        th:value="${courses.tps_id}"
+
+                        th:text="${courses.tps_Name}">
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="quanly_item-r">
+            <label for="">Số Lượng</label>
+            <input
+
+                    name="quantity"
+                    id=""
+                    placeholder="Nhập Số Lượng...." type="number" min="0" required/>
+          </div>
+        </div>
+      </div>
+      <div class="quanLy-btns">
+        <button formaction="/admin/code-khoahoc/create">Thêm</button>
+
+        <a href="/admin/code-khoahoc"><button type="button">Đặt Lại</button></a>
+      </div>
+      </form>
+    </div>
+
+  </div>
+
+    <div id="danhSach" class="w3-container city" style="display: none">
+      <input style="margin-left: 12px; padding: 10px;" type="text" id="searchInput"  placeholder="Tìm kiếm tài Khoản..." oninput="search()">
+      <table id="customers">
+        <tr>
+          <th>Mã Code</th>
+          <th>Số Lượng</th>
+          <th>Khóa Học</th>
+          <th>Người Mua</th>
+          <th>Hành Động</th>
+        </tr>
+        <tr th:each="p : ${accountPage.courseCodes}">
+          <td class="code-cell" th:data-code="${p.code}">*****  <ion-icon class="show-code" name="eye-outline"></ion-icon></td>
+          <div th:if="${p.quantity ==0}">
+            <td>Đã Hết</td>
+          </div>
+          <div th:unless="${p.quantity ==0}">
+            <td th:text="${p.quantity}"></td>
+          </div>
+
+          <td th:text="${p.courseCode.tps_Name}"></td>
+          <td th:text="${p.account.tps_Username}"></td>
+          <td>
+
+<!--            <ion-icon name="trash-outline"></ion-icon>-->
+          <a th:href="@{|/admin/code-khoahoc/edit?idcode=${p.id}|}">  <ion-icon name="create-outline"></ion-icon></a>
+          </td>
+        </tr>
+      </table>
+      <div class="pagination" style="padding: 40px 300px">
+        <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+        <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+        <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    function search() {
+      var searchInput = document.getElementById("searchInput");
+      var search = searchInput.value;
+      $.ajax({
+        url: '/admin/code-khoahoc',
+        type: 'GET',
+        data: {
+          page: 1,
+          keyword: search
+        },
+        success: function(response) {
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+
+  </script>
+  <script>
+    // Lắng nghe sự kiện click vào icon "eye-outline"
+    document.querySelectorAll('.show-code').forEach(icon => {
+      icon.addEventListener('click', event => {
+        const codeCell = event.target.parentNode.parentNode.querySelector('.code-cell');
+        const code = codeCell.dataset.code;
+        codeCell.textContent = code;
+      });
+    });
+  </script>
+  <script th:inline="javascript">
+    function loadPage(page, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      $.ajax({
+        url: '/admin/code-khoahoc',
+        data: {
+          page: page
+        },
+        success: function(response) {
+          // Cập nhật nội dung danh sách tài khoản
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+        },
+        error: function(xhr, status, error) {
+          console.log("Error: " + error);
+        }
+      });
+    }
+  </script>
+</div>
+</body>
+</html>

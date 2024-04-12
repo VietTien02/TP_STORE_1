@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" th:replace="~{/site/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+   	<title>Khóa Học Của Tôi</title>
+    <link rel="shortcut icon" href="/image/logo.jpg" type="image/x-icon" />
+
+</head>
+<body>
+<div class="details-sectionss" th:fragment="main">
+    <section class="section_index-1">
+        <div class="section_content">
+            <h1>Khóa Học Của Tôi</h1>
+            <span>Các khóa học mà bạn đã tham gia !</span>
+        </div>
+        <th:block th:if="${mycrouse.isEmpty()}"  >
+        <div class="quaTrinhHocs">
+        <div class="quaTrinhHoc">
+            <p>Bạn hiện không trong quá trình học khoá học nào
+                Hãy tiếp tục tìm kiếm khoá học để bắt đầu quá trình học nhé !!</p><br>
+            <a th:href="@{/}"> <button class="quaTrinhHoc_btn">Tìm Kiếm Khóa Học</button> </a>
+	        </div>
+	    </div>
+        </th:block>
+        <th:block th:unless= "${mycrouse.isEmpty()}">
+        <div class="section_cards" >
+
+            <div class="section_card"  th:each="p,idx:${mycrouse}" >
+                <div class="section_card-container" >
+                    <img th:src="@{|${p.courseor.tps_image}|}" alt="" />
+                    <div class="section_card-content">
+                        <a class="hide" th:href="@{|/learning/${maxContentIds[idx.index]}/${p.courseor.tps_id}|}">Tiếp Tục Học</a>
+                    </div>
+                </div>
+
+                <div class="progress-bar" th:style="'width: ' + ${courseProgresses[idx.index]} + '%'">
+                    <div class="progress" >
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        </th:block>
+
+
+    </section>
+
+</div>
+
+</body>
+</html>

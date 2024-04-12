@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3; /* màu nền của loader */
+            border-top: 16px solid #3498db; /* màu của vòng tròn quay */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+
+
+    <div class="admin-qltk-right-bot">
+        <div id="w33" class="w3-bar">
+            <button
+                    class="w3-bar-item w3-button active"
+                    onclick="openCity('quanLy')">
+                Quản Lý
+            </button>
+            <button
+                    class="w3-bar-item w3-button"
+                    onclick="openCity('danhSach')">
+                Danh Sách
+            </button>
+        </div>
+        <div th:if="${content}">
+            <form  method="post" enctype="multipart/form-data">
+                <div id="quanLy" class="w3-container city">
+                    <div class="auto-scroll">
+                        <h1 style="text-align: center; ">Quản Lý Nội Dung Khóa Học</h1>
+                        <div class="quanly_items">
+                            <div class="quanly_items-l">
+                                <div class="quanly_item-l">
+                                    <video width="300" height="170" controls controlsList="nodownload" id="myVideo" currentTime>
+                                        <source th:src="@{|${content.tps_linkytb}|}" type="video/mp4" srcset="video_high_quality.mp4 1080w">
+                                    </video>
+                                    <input type="file" name="mulimage">
+                                    <input type="hidden" name="id" th:value="${content.tps_id}">
+                                    <input type="hidden" name="image" th:value="${content.tps_linkytb}">
+                                </div>
+                            </div>
+                            <div class="quanly_items-r">
+                                <div class="quanly_item-r">
+                                    <label for="">Tên Bài Học</label>
+                                    <input th:value="${content.tps_title}"
+                                            type="text"
+                                            name="name"
+                                            id=""
+                                            placeholder="Nhập Tên Bài Học ...." />
+                                </div>
+                                <div class="quanly_item-r">
+                                    <div class="quanly_item-r">
+                                        <label for=""> Thuộc Chương</label>
+                                        <input th:value="${content.chapter.tps_title}"
+                                               type="text"
+                                               id=""
+                                               placeholder="Nhập Tên Bài Học ...." readonly />
+
+                                        <input th:value="${content.chapter.tps_id}"
+                                               type="hidden"
+                                               name="chapter"
+                                               id=""
+                                               placeholder="Nhập Tên Bài Học ...." />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="quanLy-btn bottom-height" style="margin-top: 50px; margin-bottom: 100px;">
+                            <button formaction="/admin/noi-dung/save">Chỉnh Sửa</button>
+                            <a th:href="@{|/admin/noi-dung/edit?id=${content.tps_id}|}"><button type="button">Đặt Lại</button></a>
+                            <a th:href="@{|/admin/noi-dung/|}"><button type="button">Thêm Mới</button></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div th:unless="${content}" >
+            <form   method="post" enctype="multipart/form-data" >
+                <div id="quanLy" class="w3-container city">
+                    <div class="auto-scroll">
+                        <h1 style="text-align: center; margin-bottom: 30px;">Quản Lý Nội Dung Khóa Học</h1>
+                        <div class="quanly_items">
+                            <div class="quanly_items-l">
+                                <div class="quanly_item-l">
+                                    <img src="/image/iconuploadvideo.jpg" alt="" />
+                                    <input type="file"   accept="video/*" name="mulimage" >
+                                </div>
+                            </div>
+                            <div class="quanly_items-r">
+                                <div class="quanly_item-r">
+                                    <label for="">Tên Bài Học</label>
+                                    <input th:value="${name}"
+                                            type="text"
+                                            name="tenbaihoc"
+                                            id="tenbaihoc"
+                                            placeholder="Nhập Tên Bài Học ...."  required/>
+                                </div>
+                                <div class="quanly_item-r">
+                                    <div class="custom-select">
+                                        <select id="courseselect" name="course" >
+                                            <option value="">--Chọn Khóa Học--</option>
+                                            <option th:each="course : ${courses}" th:value="${course.tps_id}"
+                                                    th:text="${course.tps_Name}" th:selected="${thongtin != null && thongtin.tps_id == course.tps_id}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button style="padding: 10px; margin-top: 15px; background: #ffffff; border:none; outline: none" type="button" onclick="goToCourse()">Chọn Khóa Học</button>
+                                </div>
+
+                                <div class="quanly_item-r">
+                                    <div class="custom-select" >
+                                        <select   id="chapterSelect" name="chapter" required>
+                                            <option value="">--Chọn Chương--</option>
+                                            <option   th:each="p:${chapter}" th:value="${p.tps_id}" th:text="${p.tps_title}" ></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quanLy-btn bottom-height" style="margin-top: 50px; margin-bottom: 100px;">
+                            <button  formaction="/admin/noi-dung/create">THÊM</button>
+
+                            <a th:href="@{|/admin/noi-dung/|}"><button type="button">Đặt Lại</button></a>
+                        </div>
+                    </div>
+                </div></form></div>
+        <div class="loader"></div>
+        <div id="danhSach" class="w3-container city" style="display: none">
+            <h1 style="text-align: center;">Nội Dung Khóa Học</h1>
+            <div class="admin-qltk-right-top">
+                <div class="admin-qltk-right-top-1">
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm..." oninput="search()">
+                    <select style="margin-left: 20px; padding: 9px; border: none; outline: none;" id="searchOption" onchange="search()">
+                        <option value="tps_title">Theo Nội Dung</option>
+                        <option value="KH">Theo Khóa Học</option>
+                        <option value="C">Theo Chương</option>
+                    </select>
+                </div>
+            </div>
+            <table id="customers">
+                <tr>
+                    <th>Tên Bài Học</th>
+                    <th>Khóa Học</th>
+                    <th>Chương</th>
+                    <th>Hành Động</th>
+                </tr>
+                <tr th:each="p : ${accountPage.contents}">
+                    <td th:text="${p.tps_title}"></td>
+                    <td th:text="${p.chapter.course.tps_Name}"></td>
+                    <td th:text="${p.chapter.tps_title}"></td>
+                    <td>
+<!--                        <ion-icon name="trash-outline"></ion-icon>-->
+                       <a th:href="@{|/admin/noi-dung/edit?id=${p.tps_id}|}"> <ion-icon class="create_icon"  name="create-outline"></ion-icon></a>
+                    </td>
+                </tr>
+            </table>
+            <div class="pagination" style="padding: 40px 300px">
+                <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+                <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+                <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.querySelector('form');
+        const fileInput = form.querySelector('input[type="file"]');
+        const courseSelect = form.querySelector('#courseselect');
+        const chapterSelect = form.querySelector('#chapterSelect');
+        const tenBaiHocInput = form.querySelector('#tenbaihoc');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        submitBtn.addEventListener('click', (event) => {
+            // Prevent the form from being submitted
+            event.preventDefault();
+
+            // Validate file input
+            const file = fileInput.files[0];
+            const allowedExtensions = /(\.mp4|\.avi|\.mov)$/i;
+            if (!file) {
+                alert('Vui lòng chọn tệp');
+                return;
+            }
+            if (file.size > 100000000) {
+                alert('Kích thước tệp không được vượt quá 100MB');
+                fileInput.value = '';
+                return;
+            }
+            if (!allowedExtensions.exec(file.name)) {
+                alert('Loại tệp không hợp lệ. Chỉ cho phép các tệp .mp4, .avi và .mov.');
+                fileInput.value = '';
+                return;
+            }
+
+            // Validate course and chapter selects
+            if (courseSelect.value === '') {
+                alert('Vui lòng chọn khóa học');
+                return;
+            }
+            if (chapterSelect.value === '') {
+                alert('Vui lòng chọn chương');
+                return;
+            }
+
+            // Validate lesson name input
+            if (tenBaiHocInput.value.trim() === '') {
+                alert('Vui lòng nhập tên bài học');
+                return;
+            }
+
+            // Submit the form
+            form.submit();
+        });
+    </script>
+
+    <script>
+        function goToCourse() {
+            // Lấy giá trị id của khóa học được chọn
+            var courseId = document.getElementById("courseselect").value;
+ 			var tenbaihocInput = document.getElementById("tenbaihoc");
+			var tenbaihocValue = tenbaihocInput.value;
+            // Nếu giá trị id tồn tại, chuyển hướng đến trang mới
+            if (courseId) {
+                var newUrl = "/admin/noi-dung?courseId=" + courseId +"&name="+tenbaihocValue;
+                window.location.href = newUrl;
+            }
+        }
+    </script>
+    <script th:inline="javascript">
+        function loadPage(page, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            var searchInput = document.getElementById("searchInput");
+            var searchOption = document.getElementById("searchOption");
+            var search = searchInput.value;
+            var option = searchOption.value;
+            $.ajax({
+                url: '/admin/noi-dung',
+                data: {
+                    page: page,
+                    keyword: search,
+                    option: option
+                },
+                success: function(response) {
+                    // Cập nhật nội dung danh sách tài khoản
+                    var table = $(response).find("#customers").html();
+                    $("#customers").html(table);
+                    var pagination = $(response).find(".pagination").html();
+                    $(".pagination").html(pagination);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error: " + error);
+                }
+            });
+        }
+
+    </script>
+    <script>
+        function search() {
+
+            var searchInput = document.getElementById("searchInput");
+            var searchOption = document.getElementById("searchOption");
+            var search = searchInput.value;
+            var option = searchOption.value;
+            $.ajax({
+                url: '/admin/noi-dung',
+                type: 'GET',
+                data: {
+                    page: 1,
+                    keyword: search,
+                    option: option
+                },
+                success: function(response) {
+                    var table = $(response).find("#customers").html();
+                    $("#customers").html(table);
+
+                    // Cập nhật phân trang
+                    var pagination = $(response).find(".pagination").html();
+                    $(".pagination").html(pagination);
+                    console.log('hi');
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+
+
+
+</div>
+</body>
+</html>

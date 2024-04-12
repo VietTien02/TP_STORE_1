@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mật Khẩu Mới</title>
+  <link rel="shortcut icon" href="/image/logo.jpg" type="image/x-icon" />
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/rps_mobile.css" />
+
+</head>
+<body>
+<div class="container">
+  <form th:action="@{/doi-mat-khau}" method="post" onsubmit="return validateForm() ">
+    <div th:if="${script}" th:utext="${script}"></div>
+
+    <div class="form-login" style="background-color: #fff">
+      <div style="margin-bottom: 10px" class="form-login-image">
+        <a th:href="@{/}"> <img style="height: 60px; width: auto" src="/image/logo.jpg" alt="" /></a>
+      </div>
+      <h1 style="text-align: center; padding: 10px">Mật Khẩu Mới</h1>
+      <div class="form-login-input">
+        <input name="taikhoan" th:value="${#request.remoteUser}"
+                class="form-input "
+                 readonly
+                />
+      </div>
+      <div class="form-login-input">
+        <input name="password"
+               type="password"
+               class="form-input input-1"
+				 id="password-1"
+               placeholder=" "   th:value="${param.password != null ? param.password : ''}" />
+        <label for="name" class="form-label">Nhập Mật Khẩu Cũ</label>
+        <i class="fa-regular fa-eye eye-open hidden"></i>
+        <i class="fa-regular fa-eye-slash eye-close"></i>
+      </div>
+      <div class="form-login-input">
+        <input name="passwordmoi"
+               type="password"
+               class="form-input input-2"
+               id="password-2"
+               placeholder=" "
+               th:value="${param.passwordmoi != null ? param.passwordmoi : ''}" />
+
+        <label for="name" class="form-label">Nhập Mật Khẩu Mới</label>
+        <i class="fa-regular fa-eye eye-open hidden"></i>
+        <i class="fa-regular fa-eye-slash eye-close"></i>
+      </div>
+      <div class="form-login-input">
+        <input name="passwordmoi2"
+                type="password"
+                class="form-input input-3"
+                id="password-3"
+                placeholder=" "   th:value="${param.passwordmoi2 != null ? param.passwordmoi2 : ''}"/>
+        <label for="name" class="form-label">Nhập Lại Mật Khẩu Mới</label>
+        <i class="fa-regular fa-eye eye-open hidden"></i>
+        <i class="fa-regular fa-eye-slash eye-close"></i>
+      </div>
+      <div th:text="${tb}"></div>
+      <div class="btn-login" style="margin-bottom: 25px">
+        <button  type="submit" style="height: 45px">Xác Nhận</button>
+        <input type="hidden" name="token" th:value="${token}" />
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  function validateForm() {
+    const password = document.getElementsByName("passwordmoi")[0].value;
+    const password2 = document.getElementsByName("passwordmoi2")[0].value;
+
+    if (password !== password2) {
+      alert("Mật khẩu mới và Nhập lại mật khẩu không khớp.");
+      return false;
+    }
+
+    const pattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*#?&]{9,}$/;
+
+    if (!pattern.test(password)) {
+      alert("Mật khẩu mới phải có ít nhất 9 ký tự, bao gồm ký tự hoa và số.");
+      return false;
+    }
+
+    return true;
+  }
+</script>
+<script>
+      const input1 = document.querySelector(".input-1");
+      const eyeOpen1 = document.querySelector(".eye-open");
+      const eyeClose1 = document.querySelector(".eye-close");
+      eyeOpen1.addEventListener("click", function () {
+        eyeOpen1.classList.add("hidden");
+        eyeClose1.classList.remove("hidden");
+        input1.setAttribute("type", "password");
+      });
+      eyeClose1.addEventListener("click", function () {
+        eyeOpen1.classList.remove("hidden");
+        eyeClose1.classList.add("hidden");
+        input1.setAttribute("type", "text");
+      });
+      const input2 = document.querySelector(".input-2");
+      const eyeOpen2 = document.querySelectorAll(".eye-open")[1];
+      const eyeClose2 = document.querySelectorAll(".eye-close")[1];
+      eyeOpen2.addEventListener("click", function () {
+        eyeOpen2.classList.add("hidden");
+        eyeClose2.classList.remove("hidden");
+        input2.setAttribute("type", "password");
+      });
+      eyeClose2.addEventListener("click", function () {
+        eyeOpen2.classList.remove("hidden");
+        eyeClose2.classList.add("hidden");
+        input2.setAttribute("type", "text");
+      });
+      
+      const input3 = document.querySelector(".input-3");
+      const eyeOpen3 = document.querySelectorAll(".eye-open")[2];
+      const eyeClose3 = document.querySelectorAll(".eye-close")[2];
+      eyeOpen3.addEventListener("click", function () {
+        eyeOpen3.classList.add("hidden");
+        eyeClose3.classList.remove("hidden");
+        input3.setAttribute("type", "password");
+      });
+      eyeClose3.addEventListener("click", function () {
+        eyeOpen3.classList.remove("hidden");
+        eyeClose3.classList.add("hidden");
+        input3.setAttribute("type", "text");
+      });
+    </script>
+
+</body>
+</html>

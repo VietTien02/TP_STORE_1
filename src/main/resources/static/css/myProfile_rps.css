@@ -1,0 +1,38 @@
+@media (max-width: 600px) {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+    .My-Profiles {
+        margin: 120px 20px 0px;
+        padding-bottom: 10px;
+    }
+    .My-Profile-right {
+        display: flex;
+        justify-content: flex-start;
+    }
+}
+@media (max-width: 370px) {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+    .My-Profiles {
+        margin: 120px 20px 0px;
+        padding-bottom: 10px;
+    }
+    .My-Profile {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: auto;
+        gap: 20px;
+    }
+    .My-Profile-right {
+        display: flex;
+        justify-content: flex-start;
+    }
+}

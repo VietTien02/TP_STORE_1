@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+  <h1 style="text-align: center; margin: 30px;">Lịch Sử Mua Khóa Học</h1>
+  <div class="admin-qltk-right-top-1">
+
+
+  </div>
+  <div id="quanLy" class="w3-container city">
+
+    <div class="quanly_item">
+      <div id="danhSach" class="w3-container city">
+
+        <table id="customers" >
+            <input style="padding: 5px 10px; margin-left: 15px" type="date" id="startDateInput" placeholder="Ngày bắt đầu">
+            <input style="padding: 5px 10px;" type="date" id="endDateInput" placeholder="Ngày kết thúc">
+            <button style="padding: 6px 10px; margin-left: 10px" onclick="tim()">Tìm kiếm</button>
+          <button style="padding: 6px 10px; margin-left: 5px" onclick="resetDates()">Reset</button>
+
+          <thead>
+
+          <tr >
+            <th>STT</th>
+            <th >Tài Khoản </th>
+            <th>Khóa Học</th>
+            <th>Ngày Thanh Toán</th>
+
+            <th>Phương Thức Thanh Toán</th>
+          </tr>
+          </thead>
+          <tr th:each="order : ${accountPage.orderList}">
+            <td th:text="${order.tps_id}"></td>
+            <td th:text="${order.tps_username}"></td>
+            <td th:text="${order.courseor.tps_Name}"></td>
+            <td th:text="${order.tps_date}"></td>
+            <td th:text="${order.pay}"></td>
+
+
+          </tr>
+        </table>
+
+        <div class="pagination" style="padding: 40px 300px">
+          <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+          <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+          <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script>
+        function tim() {
+
+
+
+            var startDateInput = document.getElementById("startDateInput");
+            var startDate = startDateInput.value;
+            var endDateInput = document.getElementById("endDateInput");
+            var endDate = endDateInput.value;
+
+            $.ajax({
+                url: '/admin/order',
+                type: 'GET',
+                data: {
+                    page: 1,
+                  startDateStr: startDate,
+                  endDateStr: endDate,
+                },
+                success: function(response) {
+                  var table = $(response).find("#customers").html();
+                  $("#customers").html(table);
+                  var pagination = $(response).find(".pagination").html();
+                  $(".pagination").html(pagination);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+        function resetDates() {
+          location.reload();
+        }
+    </script>
+  <script th:inline="javascript">
+    function loadPage(page, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      $.ajax({
+        url: '/admin/order',
+        data: {
+          page: page
+        },
+        success: function(response) {
+          // Cập nhật nội dung danh sách tài khoản
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+        },
+        error: function(xhr, status, error) {
+          console.log("Error: " + error);
+        }
+      });
+    }
+  </script>
+
+
+
+  <script>
+    function exportToExcel(keyword) {
+      var searchInput = document.getElementById("searchInput");
+      var search = searchInput.value;
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/admin/payment/exportToExcel?keyword=' + encodeURIComponent(search), true);
+      xhr.responseType = 'blob';
+      xhr.onload = function () {
+        if (this.status === 200) {
+          var filename = "payments.xlsx";
+          var blob = new Blob([xhr.response], {type: 'application/vnd.ms-excel'});
+          if (typeof window.navigator.msSaveBlob !== 'undefined') {
+            // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created.
+            // These URLs will no longer resolve as the data backing the URL has been freed."
+            window.navigator.msSaveBlob(blob, filename);
+          } else {
+            var URL = window.URL || window.webkitURL;
+            var downloadUrl = URL.createObjectURL(blob);
+            if (filename) {
+              // use HTML5 a[download] attribute to specify filename
+              var a = document.createElement("a");
+              // safari doesn't support this yet
+              if (typeof a.download === 'undefined') {
+                window.location = downloadUrl;
+              } else {
+                a.href = downloadUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+              }
+            } else {
+              window.location = downloadUrl;
+            }
+            setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+          }
+        } else {
+          // xử lý lỗi
+        }
+      };
+      xhr.send();
+    }
+
+  </script>
+
+
+
+</div>
+
+
+</body>
+</html>

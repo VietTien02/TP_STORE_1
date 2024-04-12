@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+  <h1 style="text-align: center; margin-top: 30px;">Quản Lý Phân Quyền</h1>
+  <div class="admin-qltk-right-top-1">
+    <input type="text" style="margin: 10px 0px 10px 20px; background: #ffffff;" id="searchInput"  placeholder="Tìm kiếm..." oninput="search()">
+  </div>
+  <div id="quanLy" class="w3-container city">
+
+    <div class="quanly_item">
+      <div style="padding: 0px 20px;" id="danhSach" class="w3-container city">
+        <table id="customers"  >
+          <thead>
+          <tr >
+            <th style="width: 400px;">Tài khoản</th>
+            <th th:each="role: ${roles}" th:text="${role.tps_Name}"></th>
+          </tr>
+          </thead>
+          <tr th:each="authority : ${authorities}">
+            <td th:text="${authority.account.tps_Username}"></td>
+            <td th:each="role : ${roles}">
+              <input th:id="'checkbox-' + ${authority.account.tps_Username} + '-' + ${role.tps_Id}"
+                     th:name="'checkbox-' + ${authority.account.tps_Username} + '-' + ${role.tps_Id}"
+                     th:checked="${authority.role.tps_Id == role.tps_Id}"
+                     th:data-username="${authority.account.tps_Username}"
+                     th:data-role="${role.tps_Id}"
+                     type="checkbox"
+                     onclick="setRole(this)">
+            </td>
+          </tr>
+        </table>
+
+        <div class="pagination" style="padding: 40px 300px">
+          <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+          <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+          <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script th:inline="javascript">
+    function loadPage(page, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      $.ajax({
+        url: '/admin/phan-quyen',
+        data: {
+          page: page
+        },
+        success: function(response) {
+          // Cập nhật nội dung danh sách tài khoản
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+        },
+        error: function(xhr, status, error) {
+          console.log("Error: " + error);
+        }
+      });
+    }
+  </script>
+  <script>
+    function search() {
+      var searchInput = document.getElementById("searchInput");
+      var search = searchInput.value;
+      $.ajax({
+        url: '/admin/phan-quyen',
+        type: 'GET',
+        data: {
+          page: 1,
+          keyword: search
+        },
+        success: function(response) {
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+
+  </script>
+
+  <script>
+    function setRole(element) {
+      var username = element.dataset.username;
+      var role = element.dataset.role;
+      var checkboxes = document.querySelectorAll('[data-username="' + username + '"]');
+      var prevState = {};
+
+      checkboxes.forEach(function (checkbox) {
+        var roleid = checkbox.dataset.role;
+        prevState[roleid] = checkbox.checked;
+        if (roleid === role) {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+      });
+
+      var confirmation = confirm('Bạn có muốn  thay đổi ' +username + ' thành vai trò ' +role );
+      if (confirmation == true) {
+        $.ajax({
+          url: '/admin/phan-quyen/set-role',
+          type: 'POST',
+          data: {
+            username: username,
+            role: role
+          },
+          success: function(response) {
+            console.log(response);
+
+          },
+          error: function(error) {
+            console.log(error);
+            alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+          }
+        });
+      } else {
+        // Nếu người dùng không đồng ý lưu thay đổi, đặt lại checkbox và reload lại trang
+        checkboxes.forEach(function (checkbox) {
+          var roleid = checkbox.dataset.role;
+          checkbox.checked = prevState[roleid];
+        });
+        location.reload();
+      }
+    }
+
+  </script>
+
+
+
+
+  <script>
+    var checkboxes = document.getElementsByName('checkbox_group');
+    var currentCheckbox = null;
+
+    for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].onclick = function() {
+        if (this.checked) {
+          if (currentCheckbox !== null) {
+            currentCheckbox.checked = false;
+          }
+          currentCheckbox = this;
+        } else {
+          currentCheckbox = null;
+        }
+      };
+    }
+  </script>
+</div>
+
+<script src="/js/phanquyenjs.js"></script>
+</body>
+</html>

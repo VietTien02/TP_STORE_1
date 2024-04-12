@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in</title>
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/rps_mobile.css" />
+  <script src="/js/quenmk.js" defer></script>
+</head>
+<body>
+<div class="container">
+  <form action="/thay-doi-mat-khau" method="post" >
+    <div th:if="${script}" th:utext="${script}"></div>
+
+    <div class="form-login" style="background-color: #fff">
+    <div style="margin-bottom: 10px" class="form-login-image">
+      <a href="/"> <img style="height: 60px; width: auto" src="/image/logo.jpg" alt="" /></a>
+    </div>
+    <h1 style="text-align: center; padding: 10px">Mật Khẩu Mới</h1>
+    <div class="form-login-input">
+      <input name="password"
+              type="password"
+              class="form-input input-1"
+              id="password-1"
+              placeholder=" " />
+      <label for="name" class="form-label">Nhập Mật Khẩu Mới</label>
+      <i class="fa-regular fa-eye eye-open hidden"></i>
+      <i class="fa-regular fa-eye-slash eye-close"></i>
+    </div>
+    <div class="form-login-input">
+      <input
+              type="password"
+              class="form-input input-2"
+              id="password-2"
+              placeholder=" " />
+      <label for="name" class="form-label">Nhập Lại Mật Khẩu Mới</label>
+      <i class="fa-regular fa-eye eye-open hidden"></i>
+      <i class="fa-regular fa-eye-slash eye-close"></i>
+    </div>
+    <div class="btn-login" style="margin-bottom: 25px">
+      <button  type="submit" style="height: 45px">Xác Nhận</button>
+      <input type="hidden" name="token" th:value="${token}" />
+    </div>
+  </div>
+  </form>
+</div>
+<script>
+  function submitForm() {
+    var token = document.getElementById("token").value;
+    var password = document.getElementById("password").value;
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          alert(xhr.responseText);
+        } else {
+          alert(xhr.responseText);
+        }
+      }
+    };
+    xhr.open("POST", "/thay-doi-mat-khau", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send("token=" + token + "&password=" + password);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Question CRUD Form</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Sửa Câu Hỏi Và Đáp Án Quiz</h1>
+  <form  method="post">
+    <select  class="form-control" id="correctoption1" required name="quiz" >
+
+      <option  th:each="quizList:${quizList}"  th:value="${quizList.id}"  th:text="${quizList.content.tps_title}" ></option>
+
+    </select >
+    <div  th:each="question,questionStat :${quizQuestions}"  th:with="indexStat=${questionStat.index + 1}">
+    <div class="form-group">
+      <h2 style="text-align: center;" th:text="${'câu '+indexStat}"></h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control"  id="question1" th:value="${question.question}" th:name="'question'+${indexStat}" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" th:value="${question.optionA}" th:name="'optionA'+${indexStat}" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" th:value="${question.optionB}" th:name="'optionB'+${indexStat}" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" th:value="${question.optionC}" th:name="'optionC'+${indexStat}" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" th:value="${question.optionD}" th:name="'optionD'+${indexStat}" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" th:name="'correctoption'+${indexStat}" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA" th:selected="${question.correctoption =='optionA'}">A</option>
+        <option value="optionB" th:selected="${question.correctoption =='optionB'}">B</option>
+        <option value="optionC" th:selected="${question.correctoption =='optionC'}">C</option>
+        <option value="optionD" th:selected="${question.correctoption =='optionD'}">D</option>
+      </select>
+    </div>
+</div>
+
+    <!-- Repeat the above code for the remaining 9 questions, replacing the number in each field ID and name -->
+
+    <button type="submit" formaction="/admin/quiz-add/update" class="btn btn-primary">Sửa</button>
+   
+  </form>
+
+</div>
+</body>
+</html>

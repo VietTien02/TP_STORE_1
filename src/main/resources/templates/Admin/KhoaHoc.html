@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+  <div class="admin-qltk-right-bot">
+    <div id="w33" class="w3-bar">
+      <button
+              class="w3-bar-item w3-button active"
+              onclick="openCity('quanLy')">
+        Quản Lý
+      </button>
+      <button
+              class="w3-bar-item w3-button"
+              onclick="openCity('danhSach')">
+        Danh Sách
+      </button>
+    </div>
+    <div th:if="${course}">
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <div id="quanLy" class="w3-container city" >
+      <div class="auto-scroll">
+        <h1 style="text-align: center;">Quản Lý Khóa Học</h1>
+        <div class="quanly_items" >
+          <div class="quanly_items-l">
+            <div class="quanly_item-l">
+              <img th:src="*{course.tps_image}" alt="" />
+              <input type="file" name="mulimage"id="fileInput2" accept="image/*">
+              <input type="hidden" name="image"  th:value="${course.tps_image}">
+            </div>
+          </div>
+          <div class="quanly_items-r">
+            <div class="quanly_item-r">
+              <label for="">Tên khóa học</label>
+              <input type="hidden" name="id" th:value="*{course.tps_id}">
+              <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      placeholder="Nhập Tên khóa học ...." th:value="*{course.tps_Name}"  required />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Giá Gốc</label>
+              <input
+                      type="number" min="0"
+                      name="discount"
+                      id=""
+                      placeholder="Nhập Giá Gốc ...." th:value="*{course.tps_discount}"  required />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Giá Khuyến Mãi</label>
+              <input
+                      type="number" min="0"
+                      name="price"
+                      id=""
+                      placeholder="Nhập Giá Khuyến Mãi ...." th:value="*{course.tps_Price}" required  />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Thông Tin Khóa Học</label>
+              <textarea
+                      type="text"
+                      name="information"
+                      id=""
+                      placeholder="Nhập Thông Tin Khóa Học ...." th:text="*{course.tps_information}" required />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Nội Dung Khóa Học</label>
+              <textarea required
+                      type="text"
+                      name="noidung"
+                      id=""
+                      placeholder="Nhập Nội Dung Khóa Học ...." th:text="*{fileContent}" ></textarea>
+              <input type="hidden" name="url" th:value="*{course.learn}">
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Ngày Kích Hoạt</label>
+              <input
+                      type="text"
+                      name="date"
+                      id=""
+                      placeholder="Nhập Ngày Kích Hoạt ...."  th:value="*{course.tps_date}" readonly />
+            </div>
+            <div class="quanly_items-r-radio">
+              <label for="">Kích Hoạt Khóa Học: </label>
+
+              <div class="quanly_item-r-radio">
+                <input type="radio" id="html" name="radio" th:value="true" th:checked="${course.tps_Status==true}" />
+                <label for="html">Kích Hoạt</label>
+              </div>
+
+              <div class="quanly_item-r-radio">
+                <input type="radio" id="css" name="radio" th:value="false" th:checked="${course.tps_Status ==false}" />
+                <label for="css">Chưa Kích Hoạt</label>
+              </div>
+            </div>
+            <div class="quanly_item-r">
+              <div class="custom-select">
+                <select name="category">
+                  <option value="">-- Select category --</option>
+                  <option name="category"
+                          th:each="category : ${category}"
+                          th:value="${category.tps_Id}"
+                          th:selected="${course.category.tps_Id == category.tps_Id}"
+                          th:text="${category.tps_Name}">
+                  </option>
+                </select>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quanLy-btn bottom-height" style="margin-top: 50px; margin-bottom: 100px;">
+
+          <button formaction="/admin/khoa-hoc/save">Chỉnh Sửa</button>
+          <a href="/admin/khoa-hoc" > <button type="button" >Thêm Mới</button></a>
+        </div>
+      </div>
+    </div></form></div>
+    <div th:unless="${course}">
+      <form method="post" enctype="multipart/form-data" >
+    <div id="quanLy" class="w3-container city" >
+      <div class="auto-scroll">
+        <h1 style="text-align: center; margin-bottom: 10px;">Quản Lý Khóa Học</h1>
+        <div class="quanly_items">
+          <div class="quanly_items-l">
+            <div class="quanly_item-l">
+              <img src="/image/noimage.jpg" alt="" />
+              <input type="file" name="image" >
+            </div>
+          </div>
+          <div class="quanly_items-r">
+            <div class="quanly_item-r">
+              <label for="">Tên khóa học</label>
+              <input
+                      type="text"
+                      name="name"
+                      id=""
+                      placeholder="Nhập Tên khóa học ...." />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Giá Gốc</label>
+              <input
+                      type="text"
+                      name="discount"
+                      id=""
+                      placeholder="Nhập Giá Gốc ...." />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Giá Khuyến Mãi</label>
+              <input
+                      type="text"
+                      name="price"
+                      id=""
+                      placeholder="Nhập Giá Khuyến Mãi ...." />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Thông Tin Khóa Học</label>
+              <input
+                      type="text"
+                      name="information"
+                      id=""
+                      placeholder="Nhập Thông Tin Khóa Học ...." />
+            </div>
+            <div class="quanly_item-r">
+              <label for="">Nội Dung Khóa Học</label>
+              <textarea
+                      type="text"
+                      name="noidung"
+                      id=""
+                      placeholder="Nhập Nội Dung Khóa Học ...."></textarea>
+            </div>
+
+            <div class="quanly_items-r-radio">
+              <label for="">Kích Hoạt Khóa Học: </label>
+
+              <div class="quanly_item-r-radio">
+                <input type="radio" id="html" name="radio" value="true" checked />
+                <label for="html">Kích Hoạt</label>
+              </div>
+
+              <div class="quanly_item-r-radio">
+                <input type="radio" id="css" name="radio" value="false" />
+                <label for="css">Chưa Kích Hoạt</label>
+              </div>
+            </div>
+            <div class="quanly_item-r">
+              <div class="custom-select">
+                <select name="category">
+                  <option value="">--Chọn Danh Mục Khóa Học--</option>
+                  <th:block th:each="category : ${category}">
+                    <option th:value="${category.tps_Id}" name="category" th:text="${category.tps_Name}" th:selected="${category.tps_Id == selectedCategoryId}"></option>
+                  </th:block>
+                </select>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quanLy-btn bottom-height" style=" margin-bottom: 100px;">
+          <button formaction="/admin/khoa-hoc/create"  >Create</button>
+          <a href="/admin/khoa-hoc"> <button type="button" >Đặt Lại</button></a>
+        </div>
+      </div>
+    </div></form></div>
+    <div id="danhSach" class="w3-container city" style="display: none">
+      <div class="admin-qltk-right-top-1">
+
+        <input style="margin-left: 12px; padding: 10px;" type="text" id="searchInput" placeholder="Tìm kiếm..." oninput="search()">
+
+
+      </div>
+      <table id="customers">
+        <tr>
+          <th>Ảnh</th>
+          <th>Tên Khóa Học</th>
+          <th>Giá Gốc</th>
+          <th>Giá Khuyến Mãi</th>
+          <th>Ngày Kích Hoạt</th>
+          <th>Trang Thái</th>
+          <th>Danh Mục</th>
+          <th>Hành Động</th>
+        </tr>
+        <tr th:each="p : ${accountPage.courses}">
+          <td>logo.jpg</td>
+          <td th:text="${p.tps_Name}"></td>
+          <td th:text="${p.tps_discount}"></td>
+          <td th:text="${p.tps_Price}"></td>
+          <td th:text="${p.tps_date}"></td>
+          <td th:text="${p.tps_Status}"></td>
+          <td th:text="${p.category.tps_Name}"></td>
+
+          <td>
+           <a th:href="@{|/admin/khoa-hoc/edit?id=${p.tps_id}|}"> <ion-icon class="create_icon"  name="create-outline"></ion-icon></a>
+          </td>
+        </tr>
+      </table>
+      <div class="pagination" style="padding: 40px 300px">
+        <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+        <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+        <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.querySelector('form');
+    const nameInput = document.querySelector('input[name="name"]');
+    const discountInput = document.querySelector('input[name="discount"]');
+    const priceInput = document.querySelector('input[name="price"]');
+    const informationInput = document.querySelector('input[name="information"]');
+    const noidungInput = document.querySelector('textarea[name="noidung"]');
+    const categorySelect = document.querySelector('select[name="category"]');
+
+    form.addEventListener('submit', (event) => {
+      let errors = [];
+
+      if (nameInput.value.trim() === '') {
+        errors.push('Tên khóa học không được bỏ trống');
+      }
+
+      if (discountInput.value.trim() === '') {
+        errors.push('Giá gốc không được bỏ trống');
+      } else if (isNaN(discountInput.value) || Number(discountInput.value) < 0) {
+        errors.push('Giá gốc phải là số và không được âm');
+      }
+
+      if (priceInput.value.trim() === '') {
+        errors.push('Giá khuyến mãi không được bỏ trống');
+      } else if (isNaN(priceInput.value) || Number(priceInput.value) < 0) {
+        errors.push('Giá khuyến mãi phải là số và không được âm');
+      }
+
+      if (informationInput.value.trim() === '') {
+        errors.push('Thông tin khóa học không được bỏ trống');
+      }
+
+      if (noidungInput.value.trim() === '') {
+        errors.push('Nội dung khóa học không được bỏ trống');
+      }
+
+      if (categorySelect.value.trim() === '') {
+        errors.push('Bạn phải chọn danh mục khóa học');
+      }
+
+      if (errors.length > 0) {
+        event.preventDefault();
+        alert(errors.join('\n'));
+      }
+    });
+  </script>
+
+  <script>
+    function validateForm() {
+      var name = document.forms["myForm"]["name"].value;
+      var information = document.forms["myForm"]["information"].value;
+      var noidung = document.forms["myForm"]["noidung"].value;
+      var category = document.forms["myForm"]["category"].value;
+      var price = document.forms["myForm"]["price"].value;
+      var discount = document.forms["myForm"]["discount"].value;
+
+      if (name == "" || information == "" || noidung == "" || category == "") {
+        alert("Please fill in all required fields.");
+        return false;
+      }
+
+      if (price < 0 || discount < 0) {
+        alert("Price cannot be negative.");
+        return false;
+      }
+    }
+  </script>
+
+  <script th:inline="javascript">
+    function loadPage(page, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      $.ajax({
+        url: '/admin/khoa-hoc',
+        data: {
+          page: page
+        },
+        success: function(response) {
+          // Cập nhật nội dung danh sách tài khoản
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+        },
+        error: function(xhr, status, error) {
+          console.log("Error: " + error);
+        }
+      });
+    }
+  </script>
+  <script>
+    function search() {
+      var searchInput = document.getElementById("searchInput");
+      var search = searchInput.value;
+      $.ajax({
+        url: '/admin/khoa-hoc',
+        type: 'GET',
+        data: {
+          page: 1,
+          keyword: search
+        },
+        success: function(response) {
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+
+          // Cập nhật phân trang
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+
+  </script>
+</div>
+</body>
+</html>

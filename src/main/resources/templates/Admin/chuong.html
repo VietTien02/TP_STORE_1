@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+    <div class="admin-qltk-right-bot">
+        <div id="w33" class="w3-bar">
+            <button
+                    class="w3-bar-item w3-button active"
+                    onclick="openCity('quanLy')">
+                Quản Lý
+            </button>
+            <button
+                    class="w3-bar-item w3-button"
+                    onclick="openCity('danhSach')">
+                Danh Sách
+            </button>
+        </div>
+
+        <div th:if="${chapter}">
+            <form method="post">
+
+
+
+                <div id="quanLy" class="w3-container city">
+            <h1 style="text-align: center">Quản Lý Chương</h1>
+            <div class="quanly_items-chuong">
+                <div class="quanly_items-rs">
+                    <div class="quanly_item-r">
+                        <label for="">Tên Chương</label>
+                        <input type="hidden"
+
+                                name="id"
+                                id=""
+                                placeholder="Nhập Tên Chương...." th:value="*{chapter.tps_id}" />
+                        <input
+                                type="text"
+                                name="title"
+                                id=""
+                                placeholder="Nhập Tên Chương...." th:value="*{chapter.tps_title}" required />
+                    </div>
+                    <div class="quanly_item-r">
+                        <div class="custom-select" style="margin: 0;">
+                            <input
+                                    type="text"
+                                    name="course_name"
+                                    id=""
+                                    placeholder="Nhập Tên Chương...." th:value="*{chapter.course.tps_Name}" readonly  />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="quanLy-btns">
+
+                <button formaction="/admin/chuong/save">Chỉnh Sửa</button>
+                <a th:href="@{|/admin/chuong/edit?id=${chapter.tps_id}|}"><button type="button">Đặt Lại</button></a>
+                <a href="/admin/chuong"> <button type="button">Thêm Mới</button></a>
+            </div>
+        </div></form></div>
+
+        <div th:unless="${chapter}"><form method="post">
+        <div id="quanLy" class="w3-container city">
+            <h1 style="text-align: center">Quản Lý Chương</h1>
+            <div class="quanly_items-chuong">
+                <div class="quanly_items-rs">
+                    <div class="quanly_item-r">
+                        <label for="">Tên Chương</label>
+                        <input
+                                type="text"
+                                name="name"
+                                id=""
+                                placeholder="Nhập Tên Chương...." required />
+                    </div>
+                    <div class="quanly_item-r">
+                        <div class="custom-select" style="margin: 0;">
+                            <select id="course-select" onchange="onChangeCourseSelect()" name="id" required>
+                                <option disabled selected value="">--Chọn Khóa Học--</option>
+                                <th:block th:each="course : ${courses}">
+                                    <option th:value="${course.tps_id}" th:text="${course.tps_Name}"></option>
+                                </th:block>
+                            </select>
+
+                        </div>
+<!--                        <div class="chapter">-->
+<!--                            <th:block th:if="${chapter != null}" th:each="chapter : ${chapter}">-->
+<!--                                <div th:text="${chapter.tps_title}"></div>-->
+<!--                            </th:block>-->
+<!--                        </div>-->
+                    </div>
+            </div>
+            <div class="quanLy-btns">
+                <button formaction="/admin/chuong/create">Thêm</button>
+               <a href="/admin/chuong"> <button type="button">Đặt Lại</button></a>
+            </div>
+        </div></form></div>
+        <div id="danhSach" class="w3-container city" style="display: none">
+            <div class="admin-qltk-right-top">
+                <div class="admin-qltk-right-top-1">
+
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm..." oninput="search()">
+                    <input name="chk" type="radio" style="margin-left: 50px;width: 30px" checked id="radioChuong" onchange="changeRadio()">Theo Chương
+                    <input name="chk" type="radio" style="width: 30px" id="radioKhoaHoc" onchange="changeRadio()">Theo Khóa Học
+
+
+                </div>
+            </div>
+            <table id="customers">
+                <tr>
+                    <th>Tên Chương</th>
+                    <th>Tên Khóa Học</th>
+                    <th>Hành Động</th>
+                </tr>
+                <tr th:each="p : ${accountPage.chapters}">
+                    <td th:text="${p.tps_title}"></td>
+                    <td th:text="${p.course.tps_Name}"></td>
+                    <td>
+                       
+                       <a th:href="@{|/admin/chuong/edit?id=${p.tps_id}|}"> <ion-icon name="create-outline"></ion-icon></a>
+                    </td>
+                </tr>
+            </table>
+            <div class="pagination" style="padding: 40px 300px">
+                <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+                <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+                <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        function loadPage(page, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            var searchInput = document.getElementById("searchInput");
+            var search = searchInput.value;
+            var radioChuong = document.getElementById("radioChuong");
+            var radioKhoaHoc = document.getElementById("radioKhoaHoc");
+            var radioValue = radioChuong.checked ? "chuong" : "khoaHoc";
+            $.ajax({
+                url: '/admin/chuong',
+                data: {
+                    page: page,
+                    keyword: search,
+                    radio: radioValue
+                },
+                success: function(response) {
+                    // Cập nhật nội dung danh sách tài khoản
+                    var table = $(response).find("#customers").html();
+                    $("#customers").html(table);
+                    var pagination = $(response).find(".pagination").html();
+                    $(".pagination").html(pagination);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error: " + error);
+                }
+            });
+        }
+    </script>
+    <script>
+        function search() {
+            var searchInput = document.getElementById("searchInput");
+            var search = searchInput.value;
+            var radioChuong = document.getElementById("radioChuong");
+            var radioKhoaHoc = document.getElementById("radioKhoaHoc");
+            var radioValue = radioChuong.checked ? "chuong" : "khoaHoc";
+            $.ajax({
+                url: '/admin/chuong',
+                type: 'GET',
+                data: {
+                    page: 1,
+                    keyword: search,
+                    radio: radioValue // truyền giá trị của radio đã chọn vào đối tượng data của Ajax request
+                },
+                success: function(response) {
+                    var table = $(response).find("#customers").html();
+                    $("#customers").html(table);
+
+                    // Cập nhật phân trang
+                    var pagination = $(response).find(".pagination").html();
+                    $(".pagination").html(pagination);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+    </script>
+<script>
+    function changeRadio() {
+        var searchInput = document.getElementById("searchInput");
+        var search = searchInput.value;
+        var radioChuong = document.getElementById("radioChuong");
+        var radioKhoaHoc = document.getElementById("radioKhoaHoc");
+        var radioValue = radioChuong.checked ? "chuong" : "khoaHoc";
+        $.ajax({
+            url: '/admin/chuong',
+            type: 'GET',
+            data: {
+                page: 1,
+                keyword: search,
+                radio: radioValue // truyền giá trị của radio đã chọn vào đối tượng data của Ajax request
+            },
+            success: function(response) {
+                var table = $(response).find("#customers").html();
+                $("#customers").html(table);
+
+                // Cập nhật phân trang
+                var pagination = $(response).find(".pagination").html();
+                $(".pagination").html(pagination);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+</script>
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

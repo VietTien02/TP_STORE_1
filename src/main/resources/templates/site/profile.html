@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/site/index :: dynamic(~{::main})}">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product-Details</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+</head>
+<body>
+<div  th:fragment="main">
+
+<div class="My-Profiles" th:each="p:${acc}">
+  <h1>Thông tin cá nhân</h1>
+    <form th:action="@{/edit-name}" method="post" onsubmit="return onSubmitForm(event);">
+  <div class="My-Profile">
+
+    <div class="My-Profile-left">
+      <h3>Ho va Ten</h3>
+      <input type="text" name="fullname" id="" th:value="${p.tps_Fullname}"  />
+      <p>
+        Tên của bạn xuất hiện trên trang cá nhân và bên cạnh các bình luận
+        của bạn.
+      </p>
+    </div>
+    <div class="My-Profile-right">
+      <button   id="editButton">Chỉnh Sửa</button>
+      <div id="editButtons" style="display: none">
+        <button type="submit" id="saveButton">Lưu</button>
+        <button id="cancelButton">Hủy</button>
+      </div>
+    </div>
+      
+  </div>
+  </form>
+  <div class="My-Profile">
+    <div class="My-Profile-left">
+      <h3>Bio</h3>
+      <input type="text" name="" id="" placeholder="Them gioi thieu ..." />
+      <p>
+        Bio hiển thị trên trang cá nhân và trong các bài viết (blog) của
+        bạn.
+      </p>
+    </div>
+    <div class="My-Profile-right">
+      <button id="editButton1">Chỉnh Sửa</button>
+      <div id="editButtons1" style="display: none">
+        <button id="saveButton1">Lưu</button>
+        <button id="cancelButton1">Hủy</button>
+      </div>
+    </div>
+  </div>
+  <form th:action="@{/edit-photo}" method="post" enctype="multipart/form-data" onsubmit="return onSubmitForm2(event);">
+  <div class="My-Profile">
+    <div class="My-Profile-left My-Profile-lefts">
+      <h3 style="margin-bottom: 10px">Avatar</h3>
+      <p>Nên là ảnh vuông, chấp nhận các tệp: JPG, PNG hoặc GIF.</p>
+    </div>
+    <div class="My-Profile-right">
+      <div class="My-Profile-rights">
+        <div class="crud-img">
+          <img id="currentImage2" th:src="@{|${p.tps_Photo}|}" />
+        </div>
+        <div class="crud-btn">
+          <button id="editButton2">Chỉnh Sửa</button>
+          <div id="editControls2" style="display: none">
+            <button type="submit" id="saveButton2">Lưu</button>
+            
+            <button id="cancelButton2">Hủy</button>
+          </div>
+        </div>
+        <input type="file" name="mulimage"id="fileInput2" style="display: none" />
+      </div>
+    </div>
+  </div>
+  </form>
+  <div class="My-Profile">
+    <div class="My-Profile-left">
+      <h3>Email</h3>
+      <input type="text" name="" id="" th:value="${p.tps_Username}" readonly />
+      <p>Email của bạn sẽ xuất hiện ở đây !</p>
+    </div>
+  </div>
+  <div class="My-Profile">
+    <div class="My-Profile-left">
+      <h3>Số Điện Thoại</h3>
+      <input type="text" name="" id="" th:value="${p.tps_Number}"  />
+      <p>Số điện thoại để liên kết với F5 !</p>
+    </div>
+  </div>
+  <div class="My-Profile">
+    <div class="My-Profile-left">
+      <h3>Mật Khẩu</h3>
+      <input type="text" name="" id="" placeholder="********" readonly />
+
+    </div>
+  </div>
+</div>
+
+<script src="/js/myProfile.js"></script>
+<script src="/js/app.js"></script>
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+
+</body>
+</html>

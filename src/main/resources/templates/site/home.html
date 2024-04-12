@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en" th:replace="~{/site/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Chủ</title>
+</head>
+<body>
+
+<!--<div class="banner">-->
+<!--    <img src="/image/logene.jpg" alt="" />-->
+<!--</div>-->
+    <div th:fragment="main">
+        <div class="banner">
+            <img src="image/LTV-T3H.jpg" alt="" />
+        </div>
+        <section class="section_index-1">
+            <div class="section_content">
+                <h1>Khóa Học Miễn Phí</h1>
+                <span>Các khóa học miễn phí dành cho các bạn mới !</span>
+            </div>
+            <div class="section_cards" >
+                <div class="section_card" th:each="p:${courses}">
+                    <div class="section_card-container">
+                        <img th:src="@{|${p.tps_image}|}" alt="" />
+                        <div class="section_card-content">
+                            <a class="hide" th:href="@{|/khoa-hoc/${p.tps_id}|}" >Tiếp Tục Học</a>
+                        </div>
+                    </div>
+                    <p th:text="${p.tps_Name}"></p>
+                    <div class="price_index-1">
+                        <span>Miễn Phí</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section_index-2">
+            <div class="section_content-index2">
+                <h1>Khóa Học Có Trả Phí</h1>
+                <span>Các khóa học bạn nên mua !</span>
+            </div>
+            <div class="section_cards-index2">
+                <div class="section_card-index2" th:each="p:${coursess}">
+                    <div class="section_card-container-index2">
+                        <img th:src="@{|${p.tps_image}|}" alt="" />
+                        <div class="section_card-content-index2">
+                            <a class="hide-index2" th:href="@{|/khoa-hoc/${p.tps_id}|}" >Mua Ngay</a>
+                        </div>
+                    </div>
+                    <p th:text="${p.tps_Name}"></p>
+                    <div class="price">
+                        <b>Giá :</b>
+                        <span><del th:text="${p.str_tps_discount}+' VND'"></del></span>
+                        <span><strong th:text="${p.str_tps_price}+' VND'"></strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div style="height: 50px" id="category"></div>
+        <div class="title-container">
+            <h1>Danh mục khóa học</h1>
+        </div>
+        <section class="section_category">
+            <div class="category" >
+                <div class="category-card" th:each="p:${categories}" th:if="${not #lists.isEmpty(p.courses)}">
+                    <div class="category-card-title">
+                        <h2 th:text="${p.tps_Name}"style="color: black"  ></h2>
+                        <p   style="color: black" th:text="${#lists.size(p.courses)} + ' khóa học'"></p>
+                    </div>
+                    <div class="category-image">
+                        <a th:href="@{|/danh-muc/${p.tps_Id}|}"><img th:src="@{|${p.tps_Image}|}" alt="" /></a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="layout-container">
+            <h1>Lợi ích khi mua khóa học</h1>
+            <div class="layout_container-cards">
+                <div class="layout_container-card">
+                    <div class="layout_container-card-img">
+                        <img src="/image/video.png" alt="" />
+                    </div>
+                    <span>Video quay full HD</span>
+                </div>
+                <div class="layout_container-card">
+                    <div class="layout_container-card-img">
+                        <img src="/image/document.png" alt="" />
+                    </div>
+                    <span>Mua 1 lần, học mãi mãi</span>
+                </div>
+                <div class="layout_container-card">
+                    <div class="layout_container-card-img">
+                        <img src="/image/Support.png" alt="" />
+                    </div>
+                    <span>Hỗ trợ khi gặp khó khăn</span>
+                </div>
+                <div class="layout_container-card">
+                    <div class="layout_container-card-img">
+                        <img src="/image/Promotions.png" alt="" />
+                    </div>
+                    <span>Nhiều ưu đãi cho học viên</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/rps_mobile.css" />
+    <style>
+        .disabled-link {
+            pointer-events: none;
+            color: gray; /* optional: change the color to indicate that the link is disabled */
+            text-decoration: none; /* optional: remove underline */
+        }
+        .enabled-link {
+            color: crimson;
+        }
+        button.finish {
+            position: fixed;
+            bottom: -25px; /* đặt vị trí của nút ở đáy của trang web */
+            left: 29%; /* đặt nút ở giữa trang web */
+            transform: translateX(0%); /* căn chỉnh nút theo chiều ngang */
+            z-index: 999; /* đặt z-index cao hơn để nút luôn hiển thị trên các phần khác của trang web */
+        }
+
+
+
+    </style>
+</head>
+<body>
+<div class="view-video">
+    <header class="header-view-video">
+        <div class="header-left">
+            <a href="#" onclick="goBack()"><ion-icon name="chevron-back-outline"></ion-icon></a>
+         <a href="/"> <ion-icon name="home"></ion-icon></a>
+
+            <span th:text="${name}"> </span>
+        </div>
+        <div class="header-right">
+          <span class="start-result">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Kết quả
+          </span>
+        </div>
+        <div class="result">
+            <div class="result_main">
+                <button class="close-quizs">
+                    <ion-icon name="close-outline"></ion-icon>
+                </button>
+               <div class="result_kq" th:if="${totalScore != null}">
+                   <span>Điểm của bạn là:</span><p th:text="${totalScore}+' Điểm'"></p>
+               </div>
+                <div class="result__section" th:each="p:${quizResults}">
+                    <div class="result__section-title" th:text="${p.question.question}"></div>
+                    <div class="result__section-content">
+                        <div class="result__section-content-items">
+                            <div class="result__section-content-item">
+                                <span th:text="${p.question.optionA}"></span>
+                                <span th:if="${p.user_answer.trim() =='optionA'}">
+                                     <ion-icon th:class="${p.correct ? 'correct' : 'wrong'}" th:name="${p.correct ? 'checkmark-circle-outline' : 'add-circle-outline'}"></ion-icon>
+                                </span>
+
+                            </div>
+<!--                                <span th:text="${p.user_answer}"></span>-->
+
+
+                            <div class="result__section-content-item">
+                                <span th:text="${p.question.optionB}"></span>
+                                <span th:if="${p.user_answer.trim() =='optionB'}">
+                                     <ion-icon th:class="${p.correct ? 'correct' : 'wrong'}" th:name="${p.correct ? 'checkmark-circle-outline' : 'add-circle-outline'}"></ion-icon>
+                                </span>
+
+                            </div>
+
+                            <div class="result__section-content-item">
+                                <span th:text="${p.question.optionC}"></span>
+                                <span th:if="${p.user_answer.trim() =='optionC'}">
+                                     <ion-icon th:class="${p.correct ? 'correct' : 'wrong'}" th:name="${p.correct ? 'checkmark-circle-outline' : 'add-circle-outline'}"></ion-icon>
+                                </span>
+
+                            </div>
+
+
+                            <div class="result__section-content-item">
+                                <span th:text="${p.question.optionD}"></span>
+                                <span th:if="${p.user_answer.trim() =='optionD'}">
+                                     <ion-icon th:class="${p.correct ? 'correct' : 'wrong'}" th:name="${p.correct ? 'checkmark-circle-outline' : 'add-circle-outline'}"></ion-icon>
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="content-view-videos">
+        <div class="content-view-video">
+            <div class="content-view-left">
+                <div class="content-view-vd" >
+<!--                    <iframe-->
+<!--                            width="982"-->
+<!--                            height="552"-->
+<!--                            th:src="'https://www.youtube.com/embed/' + ${firstLink}"-->
+<!--                            title="YouTube video player"-->
+<!--                            frameborder="0"-->
+<!--                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"-->
+<!--                            allowfullscreen>-->
+<!--                    </iframe>-->
+                    <div th:if="${owned == true}">
+                        <div class="thongBao">
+                            <div class="thongBao_content">
+                                <span>Tiếp tục</span>
+                                <p>Bạn có muốn tiếp tục tại vị trí bạn rời đi không?</p>
+                                <div class="thongBao_btn">
+                                    <button   class="thongBao_btn-yes">Có</button>
+                                    <button class="thongBao_btn-no">Không</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="contentId" name="contentId" th:value="${contend}">
+                    <input type="hidden" id="courseId" name="courseId" th:value="${courseId}">
+                    <input type="hidden" id="time" th:value="${time}">
+
+                    <video width="982" height="552" controls controlsList="nodownload" id="myVideo" currentTime>
+                        <source th:src="''+${firstLink}" type="video/mp4" srcset="video_high_quality.mp4 1080w">
+                    </video>
+
+
+
+                </div>
+
+                <div class="content-view-content-1">
+                    <div class="content-view-content-left">
+                        <h1 th:text="${title}"></h1>
+
+                    </div>
+<!--                    <div class="content-view-content-right">-->
+<!--                        <ion-icon name="add-outline"></ion-icon>-->
+<!--                        <span>Thêm ghi chú tại: <strong>00:02</strong></span>-->
+<!--                    </div>-->
+                </div>
+                <div class="content-view-content-2">
+                    <p>
+                        Tham gia các cộng đồng để cùng học hỏi, chia sẻ và “thám thính”
+                        xem F5 sắp có gì mới nhé!
+                    </p>
+                    <ul>
+                        <li>Facbook: <a href="https://www.facebook.com/pvb.ryoma/">Hoàng Hữu Phúc</a></li>
+                        <li>Group: <a href="https://www.facebook.com/profile.php?id=100080203907647">F5</a></li>
+                        
+
+                    </ul>
+                </div>
+            </div>
+            <div class="content-view-right">
+                <h3 style="padding: 15px 15px 5px 15px">Nội dung khóa học</h3>
+                <div class="accordion" >
+                     <div class="contentBx"  th:each="chapter : ${ListMycourse.chapters}">
+                            <div class="accordion-label">
+                                <ion-icon name="bookmarks"></ion-icon>
+                                <span th:text="${chapter.tps_title}"></span>
+                            </div>
+                            <div class="accordion-content">
+                                <h3 style="padding: 15px 10px 5px 10px"> Tổng số bài học là <strong th:text="${chapter.contents.size()}"></strong></h3>
+                                <table>
+                                    <tr th:each="content : ${chapter.contents}">
+                                        <td>
+                                            <ion-icon name="play-circle"></ion-icon>
+                                            <span>
+                                  <a th:href="@{|/learning/${content.tps_id}/${ListMycourse.tps_id}|}"
+                                     th:classappend="${#lists.contains(userContents.![content.tps_id], content.tps_id)} ? 'enabled-link' : 'disabled-link'">
+                                    <strong></strong>[[${content.tps_title}]]
+                                  </a>
+                                </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <div class="rotate-screen"></div>
+
+    <div class="content-view-videos-bot">
+<!--        <div class="view-videos-bot-learn">-->
+<!--            <div class="view-videos-bot-learn-left">-->
+<!--                <ion-icon name="chevron-back-outline"></ion-icon>-->
+<!--                <span>Bài trước</span>-->
+<!--            </div>-->
+<!--            <div class="view-videos-bot-learn-right">-->
+<!--                <span>Bài tiếp theo</span>-->
+<!--                <ion-icon name="chevron-forward-outline"></ion-icon>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="content-view-videos-bot">
+            <div class="view-videos-bot-continue-learn">
+                <span class="start-quiz"> Bắt đầu làm quiz</span>
+            </div>
+            <form method="post" action="/quiz">
+                <input type="hidden" name="id" th:value="${contend}">
+            <div class="quiz hidden"  >
+                <div class="quiz__main">
+                    <button  type="button" class="close-quiz">
+                        <ion-icon name="close-outline"></ion-icon>
+                    </button>
+                    <input type="hidden" name="courseId" th:value="${courseId}">
+                    <div class="quiz__section" th:each="question, questionStat : ${listQuiz}">
+                        <div class="quiz__section-title" th:text="'Câu '+${questionStat.index+1}+':' +${question.question}"></div>
+                        <div class="quiz__section-content">
+                            <div class="quiz__section-content-items">
+                                <ul>
+                                    <li class="list__item">
+                                        <label class="overlay" for="">
+                                            <input
+                                                    class="overlay__none"
+                                                    type="checkbox"
+                                                    th:name="'checkbox-group-'+${questionStat.index}"
+                                                    th:value="optionA"   th:data-id="${questionStat.index}"
+                                            />
+                                            <span class="mark"></span>
+                                        </label>
+                                        <div class="boxcheck">
+                                            <div class="answer__view" th:text="${question.optionA}">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list__item">
+                                        <label class="overlay" for="">
+                                            <input
+                                                    class="overlay__none"
+                                                    type="checkbox"
+                                                    th:name="'checkbox-group-'+${questionStat.index}"
+                                                    th:value="optionB"   th:data-id="${questionStat.index}"
+                                            />
+                                            <span class="mark"></span>
+                                        </label>
+                                        <div class="boxcheck">
+                                            <div class="answer__view" th:text="${question.optionB}">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list__item">
+                                        <label class="overlay" for="">
+                                            <input
+                                                    class="overlay__none"
+                                                    type="checkbox"
+                                                    th:name="'checkbox-group-'+${questionStat.index}"
+                                                    th:value="optionC"   th:data-id="${questionStat.index}"
+                                            />
+                                            <span class="mark"></span>
+                                        </label>
+                                        <div class="boxcheck">
+                                            <div class="answer__view" th:text="${question.optionC}">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list__item">
+                                        <label class="overlay" for="">
+                                            <input
+                                                    class="overlay__none"
+                                                    type="checkbox"
+                                                    th:name="'checkbox-group-'+${questionStat.index}"
+                                                    th:value="optionD"   th:data-id="${questionStat.index}"
+                                            />
+                                            <span class="mark"></span>
+                                        </label>
+                                        <div class="boxcheck">
+                                            <div class="answer__view" th:text="${question.optionD}">
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <button type="submit"  onclick="return validateQuiz()"  class="finish">Kết Thúc</button>
+
+                </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    var time = document.getElementById('time').getAttribute('value');
+    var video = document.getElementById("myVideo");
+
+    // Thiết lập giá trị thời gian cho video (ví dụ: 30 giây)
+    video.currentTime = time;
+    // video.play();
+
+</script>
+<script>
+    const startResult = document.querySelector(".start-result");
+    const Result = document.querySelector(".result");
+    const closeQuizBtn = document.querySelector(".close-quizs");
+
+    startResult.addEventListener("click", () => {
+        Result.classList.add("shows");
+    });
+
+    closeQuizBtn.addEventListener("click", () => {
+        Result.classList.remove("shows");
+    });
+</script>
+
+<script>
+
+    var currentTime = 0;
+    var contentId = document.getElementById('contentId').getAttribute('value');
+    var courseId = document.getElementById('courseId').getAttribute('value');
+    setInterval(function() {
+        currentTime = document.getElementById('myVideo').currentTime;
+        sendTimeToServer();
+    }, 3000);
+
+    function sendTimeToServer() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/save-time', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                console.log('Time saved successfully');
+               
+            }
+        };
+
+        var seconds = Math.floor(currentTime);
+        var minutes = Math.floor(seconds / 60);
+        var hours = Math.floor(minutes / 60);
+
+        if (currentTime >= 0.99 * document.getElementById('myVideo').duration) {
+            xhr.send('contentId=' + encodeURIComponent(contentId) + '&courseId=' + courseId + '&time=Complete');
+             
+        } else {
+            var timeString = hours + ":" + (minutes % 60) + ":" + (seconds % 60);
+            xhr.send('contentId=' + encodeURIComponent(contentId) + '&courseId=' + courseId + '&time=' + timeString);
+        }
+    }
+
+</script>
+
+<script>
+    thongbao = document.querySelector(".thongBao")
+    closethongbao = document.querySelector(".thongBao_btn-no")
+    closethongbaoyes = document.querySelector(".thongBao_btn-yes")
+
+    closethongbaoyes.addEventListener("click",function (){
+        thongbao.style.display = "none";
+        video.play();
+    });
+    closethongbao.addEventListener("click", function (){
+        thongbao.style.display = "none";
+        video.currentTime = 0;
+        video.play();
+    });
+</script>
+
+<script>
+    function validateQuiz() {
+        const checkboxGroups = document.querySelectorAll('[name^="checkbox-group-"]');
+        for (let i = 0; i < checkboxGroups.length; i++) {
+            const checkboxes = document.querySelectorAll(`[name="${checkboxGroups[i].name}"]:checked`);
+            if (checkboxes.length !== 1) {
+                alert('Bạn phải chọn  1 đáp án cho câu hỏi ');
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
+</script>
+
+<script>
+    const accordion = document.getElementsByClassName("contentBx");
+    for (i = 0; i < accordion.length; i++) {
+        accordion[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+        });
+
+        const content =
+            accordion[i].getElementsByClassName("accordion-content")[0];
+        content.addEventListener("click", function (event) {
+            event.stopPropagation();
+        });
+    }
+
+    const labels = document.querySelectorAll(".overlay");
+    labels.forEach((label) => {
+        label.addEventListener("click", function () {
+            const input = this.querySelector(".overlay__none");
+            const checkboxes = document.querySelectorAll(
+                `input[name='${input.name}']`
+            );
+            checkboxes.forEach((checkbox) => {
+                if (checkbox !== input) {
+                    checkbox.checked = false;
+                    checkbox.parentElement
+                        .querySelector(".mark")
+                        .classList.remove("checked");
+                }
+            });
+            input.checked = !input.checked;
+            const mark = this.querySelector(".mark");
+            mark.classList.toggle("checked");
+        });
+    });
+    const checkboxes = document.querySelectorAll(
+        'input[name="checkbox-group"]'
+    );
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("click", () => {
+            if (checkbox.checked) {
+                checkboxes.forEach((otherCheckbox) => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                        otherCheckbox.parentElement
+                            .querySelector(".mark")
+                            .classList.remove("checked");
+                    }
+                });
+            }
+            checkbox.checked = true;
+            checkbox.parentElement
+                .querySelector(".mark")
+                .classList.add("checked");
+        });
+    });
+
+    const startQuizButton = document.querySelector(".start-quiz");
+    const quizContainer = document.querySelector(".quiz");
+    const closeQuizButton = document.querySelector(".close-quiz");
+
+    startQuizButton.addEventListener("click", () => {
+        quizContainer.classList.add("show");
+    });
+
+    closeQuizButton.addEventListener("click", () => {
+        quizContainer.classList.remove("show");
+    });
+</script>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" th:replace="~{/site/index :: dynamic(~{::main})}">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product-Details</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/rps_mobile.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+</head>
+<body>
+
+<div class="details-section" th:fragment="main">
+  <div class="details-left">
+    <div class="details-left-name">
+      <h1 th:text="${detail.tps_Name}"></h1>
+      <span th:text="${detail.tps_information}"></span>
+    </div>
+    <span class="bonus">Bạn sẽ học được gì?</span>
+    <div class="details-left-content" th:if="${fileContent != null}">
+      <pre th:utext="${fileContent}" th:inline="text"></pre>
+    </div>
+
+    <span class="cont">Nội dung khóa học</span>
+    <div class="details-left-content-2">
+      <div class="details-left-content-header1">
+        <span class="sp"><strong th:text="${soluongChuong}"> </strong> chương</span>
+        <span class="sp"><strong th:text="${totalContent}"></strong> bài học</span>
+
+      </div>
+      <div class="details-left-content-header2">
+        <span class="all">Mở rộng tất cả</span>
+      </div>
+    </div>
+    <div class="accordion" th:each="p:${listC}">
+      <div  class="contentBx">
+        <div class="accordion-label">
+          <ion-icon name="bookmarks"></ion-icon>
+          <span th:text="${p.tps_title}"></span>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-content">
+
+            <table>
+              <tr th:each="content: ${p.contents}">
+                <td>
+                  <ion-icon name="play-circle"></ion-icon>
+                  <span th:text="${content.tps_title}"></span>
+                </td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="details-right">
+    <div class="details-right-video">
+      <img th:src="@{|${detail.tps_image}|}" style="width:389px;
+      height:219px">
+<!--      <iframe-->
+<!--              width="389"-->
+<!--              height="219"-->
+<!--              src="https://www.youtube.com/embed/YTDHcEJs684"-->
+<!--              title="YouTube video player"-->
+<!--              frameborder="0"-->
+<!--              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"-->
+<!--              allowfullscreen></iframe>-->
+    </div>
+    <div class="details-right-content1" th:if="${detail.tps_Price == 0}">
+      <span>Miễn phí</span>
+
+      <th:block th:unless="${#request.remoteUser}">
+        <a th:href="@{/auth/signin}"><button>Đăng ký học</button></a>
+      </th:block>
+
+      <th:block th:if="${#request.remoteUser}">
+        <div th:if="${owned == true}">
+          <a th:href="@{|/learning/${maxContentId}/${detail.tps_id}|}">
+            <button>Học Ngay</button>
+          </a>
+
+        </div>
+        <div th:if="${owned == false}">
+          <a th:href="@{|/add-course/${detail.tps_id}|}">
+            <button>Đăng Ký Học</button>
+          </a>
+
+        </div>
+      </th:block>
+
+
+
+      </th:block>
+
+    </div>
+    <div class="details-right-content1" th:if="${detail.tps_Price > 0}">
+      <span th:text="${detail.tps_Price }+'VNĐ'"></span>
+      <th:block th:unless="${#request.remoteUser}">
+        <a th:href="@{/auth/signin}"><button>Mua Ngay</button></a>
+      </th:block>
+    <th:block th:if="${#request.remoteUser}">
+
+      <div th:if="${owned == true}">
+        <a th:href="@{|/learning/${maxContentId}/${detail.tps_id}|}">
+          <button>Học Ngay</button>
+        </a>
+      </div>
+      <div th:if="${owned == false}">
+        <a th:href="@{|/learning/${detail.tps_id}|}">
+          <a th:href="@{|/checkout/${detail.tps_id}|}"><button>Mua Ngay</button></a>
+        </a>
+
+      </div>
+
+
+    </th:block>
+    </div>
+    <div class="details-right-content2">
+      <ul>
+
+        <li>
+          <ion-icon name="wallet"></ion-icon>
+          <span>Tổng số <strong th:text="${totalContent}"></strong> bài học</span>
+        </li>
+        <li>
+          <ion-icon name="videocam"></ion-icon>
+          <span> Học mọi lúc, mọi nơi </span>
+        </li>
+        <li>
+          <ion-icon name="videocam"></ion-icon>
+          <span> Thêm vào Yêu Thích </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

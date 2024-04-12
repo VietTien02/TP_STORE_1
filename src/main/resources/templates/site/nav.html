@@ -1,0 +1,154 @@
+<header>
+    <div class="logo">
+        <a href="/">
+            <img id="img" src="/image/logo.jpg" alt="" />
+        </a>
+    </div>
+    <div class="group">
+        <ul class="navigation">
+            <li><a th:href="@{/}">Trang Chủ</a></li>
+            <li><a href="#category">Danh Mục</a></li>
+            <!--            <li><a href="">Services</a></li>-->
+            <!--            <button id="myBtn" >Kích Hoạt Khóa Học</button>-->
+
+            <th:block th:if="${#request.remoteUser}">
+
+                <button  id="myBtn" >Kích hoạt khóa học</button>
+            </th:block>
+
+            <th:block th:unless="${#request.remoteUser}">
+                <a th:href="@{/auth/signin}">
+                    <button  id="myBtn">Kích hoạt khóa học</button></a>
+            </th:block>
+
+
+        </ul>
+    </div>
+    <form action="/kich-hoat" method="get">
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <img src="/image/logo.jpg" alt="" />
+                </div>
+                <div class="modal-body">
+                    <h2>Kích hoạt khóa học của bạn</h2>
+                    <p>Nhập mã kích hoạt vào ô bên dưới</p>
+                </div>
+                <form action="/kichhoatkhoahoc" method="post">
+                    <div class="modal-footer">
+                        <input type="text" name="code" id="code" placeholder="XXXX-XXXX-XXXX">
+                        <button  type="button"  onclick="submitForm()" >Kích hoạt khóa học của bạn</button></a>
+                    </div>
+                    <span th:text="${error}"></span>
+
+
+                </form>
+            </div>
+        </div>
+    </form>
+    <th:block th:if="${#request.remoteUser}">
+        <div class="User">
+            <div class="but">
+                <div class="admin-qltk-right-top-2">
+                    <div class="dropdown">
+                        <img
+                                onclick="myFunction()"
+                                class="dropbtn"
+                                src="https://res.cloudinary.com/djfbh9dqg/image/upload/v1678788065/photo/logo_oqagna.jpg" />
+                        <span class="name">[[${#request.remoteUser}]]</span>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a  th:if="${#request.isUserInRole('Admin')}" href="/admin/doasboard">ADMIN</a>
+                            <hr th:if="${#request.isUserInRole('Admin')}">
+
+                            <a th:href="@{/profile}">Trang Cá Nhân</a>
+
+                            <a th:href="@{/change-password}">Đổi Mật Khẩu </a>
+                            <a th:href="@{/my-courses}">Khóa Học Của Tôi</a>
+                            <hr>
+
+
+                            <a th:href="@{/auth/logoff}">Đăng Xuất</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+    <th:block th:unless="${#request.remoteUser}">
+        <div class="User">
+            <div class="but">
+                <button><a th:href="@{/auth/signin}">Đăng Nhập</a></button>
+                <button><a th:href="@{/auth/signup}">Đăng Ký</a></button>
+            </div>
+        </div>
+    </th:block>
+
+
+    <div class="search">
+        <span class="icon">
+        <ion-icon name="search-outline" class="searchBtn"></ion-icon>
+          <ion-icon name="close-outline" class="closeBtn"></ion-icon>
+        </span>
+    </div>
+    <ion-icon name="menu-outline" class="menuToggle"></ion-icon>
+
+    <div class="searchBox">
+        <input type="text" id="search-input"  placeholder="Tìm Kiếm Khóa Học ..." />
+        <br>
+		<div class="searchBox_content" >
+		 <div class="searchBox_content-1">
+            <img id="search-image" class="hidden" src=""  alt="">
+            <div id="search-results"></div>
+          </div>
+        </div>
+        
+
+    </div>
+
+
+</header>
+    <script>
+      const searchInput = document.getElementById('search-input');
+      const searchResults = document.getElementById('search-results');
+      const searchImage = document.getElementById('search-image');
+
+      searchInput.addEventListener('input', (event) => {
+        const query = event.target.value;
+
+        if (query.length >= 3) {
+          fetch(`/search?q=${query}`)
+            .then(response => response.json())
+            .then(results => {
+              searchResults.innerHTML = '';
+
+             let firstResultImage = results.find(result => result.imgae !== "");
+    if (firstResultImage) {
+
+    } else {
+      searchImage.classList.add('hidden');
+    }
+            results.forEach(result => {
+            const li = document.createElement('a');
+            const a = document.createElement('a');
+            a.href = result.url;
+
+            a.textContent = result.name;
+            const img = document.createElement('img');
+            img.src = result.imgae; // Sử dụng thuộc tính 'src' để hiển thị hình ảnh
+
+            const div = document.createElement('div');
+            div.appendChild(img);
+            div.appendChild(a);
+            li.appendChild(div);
+            searchResults.appendChild(li);
+    });
+            })
+            .catch(error => console.error(error));
+        } else {
+          searchResults.innerHTML = '';
+          searchImage.classList.add('hidden');
+
+        }
+      });
+    </script>

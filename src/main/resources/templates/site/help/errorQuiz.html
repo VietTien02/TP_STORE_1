@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/site/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div th:fragment="main">
+
+    <div class="erorr">
+        <ion-icon name="sad-outline"></ion-icon>
+        <h1>Ooops...</h1>
+        <p th:text="${error}">
+
+        </p>
+        <a th:href="@{|/learning/${contend}/${courseId}|}"><button>Học Lại</button></a>
+    </div>
+</div>
+
+<script
+
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

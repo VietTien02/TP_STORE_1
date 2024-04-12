@@ -1,0 +1,7 @@
+Hiểu cách hoạt động của ReactJS, component, props và state
+Tạo các thành phần giao diện bằng JSX
+Quản lý state trong ứng dụng ReactJS
+Điều hướng giữa các trang của ứng dụng web bằng routing
+Sử dụng thư viện Redux để quản lý trạng thái ứng dụng
+Kết hợp ReactJS với các thư viện khác để tạo ra các ứng dụng web đầy đủ chức năng.
+Xây dựng các ứng dụng web từ đơn giản đến phức tạp sử dụng ReactJS.

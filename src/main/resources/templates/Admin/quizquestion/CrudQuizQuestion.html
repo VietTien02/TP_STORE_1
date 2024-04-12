@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <meta charset="UTF-8">
+	  <title>Quiz Question CRUD Form</title>
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	</head>
+<body>
+<div class="container">
+  <h1>Thêm Câu Hỏi Và Đáp Án Quiz</h1>
+  <form  method="post">
+    <select  class="form-control" id="correctoption1" required name="quiz" >
+    
+      <option value="">--Chọn Bài Quiz--</option>
+      <option th:value="${p.id}"  th:each="p:${quizList}" th:text="${p.content.tps_title}"></option>
+    </select >
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 1</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question1" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA1" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB1" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC1" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD1" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption1" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 2</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question2" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA2" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB2" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC2" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD2" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption2" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 3</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question3" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA3" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB3" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC3" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD3" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption3" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 4</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question4" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA4" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB4" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC4" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD4" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption4" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 5</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question5" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA5" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB5" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC5" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD5" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption5" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 6</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question6" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA6" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB6" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC6" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD6" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption6" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 7</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question7" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA7" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB7" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC7" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD7" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption7" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 8</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question8" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA8" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB8" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC8" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD8" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption8" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 9</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question9" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA9" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB9" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC9" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD9" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption9" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <h2 style="text-align: center;">Câu 10</h2>
+      <label for="question1">Câu Hỏi:</label>
+      <input type="text" class="form-control" id="question1" name="question10" required>
+    </div>
+    <div class="form-group">
+      <label for="optionA1">Câu A:</label>
+      <input type="text" class="form-control" id="optionA1" name="optionA10" required>
+    </div>
+    <div class="form-group">
+      <label for="optionB1">Câu B:</label>
+      <input type="text" class="form-control" id="optionB1" name="optionB10" required>
+    </div>
+    <div class="form-group">
+      <label for="optionC1">Câu C:</label>
+      <input type="text" class="form-control" id="optionC1" name="optionC10" required>
+    </div>
+    <div class="form-group">
+      <label for="optionD1">Câu D:</label>
+      <input type="text" class="form-control" id="optionD1" name="optionD10" required>
+    </div>
+    <div class="form-group">
+      <label for="correctoption1">Chọn Đáp Án</label>
+      <select class="form-control" id="correctoption1" name="correctoption10" required>
+        <option value="">Chọn Đáp Án</option>
+        <option value="optionA">A</option>
+        <option value="optionB">B</option>
+        <option value="optionC">C</option>
+        <option value="optionD">D</option>
+      </select>
+    </div>
+
+    
+
+    <button type="submit" formaction="/admin/quiz-add/create" class="btn btn-primary">Thêm</button>
+  </form>
+  
+
+
+</div>
+<script>
+  $(document).ready(function() {
+    $('#correctoption1').select2();
+  });
+</script>
+</body>
+</html>

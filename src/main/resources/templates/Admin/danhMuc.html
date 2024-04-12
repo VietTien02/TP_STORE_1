@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+  <div class="admin-qltk-right-bot">
+    <div id="w33" class="w3-bar">
+      <button
+              class="w3-bar-item w3-button active"
+              onclick="openCity('quanLy')">
+        Quản Lý
+      </button>
+      <button
+              class="w3-bar-item w3-button"
+              onclick="openCity('danhSach')">
+        Danh Sách
+      </button>
+    </div>
+
+    <div id="quanLy" class="w3-container city">
+      <div th:if="${edit}">
+        <form method="post" enctype="multipart/form-data">
+      <div class="auto-scroll">
+        <h1 style="text-align: center">Quản Lý Danh Mục</h1>
+
+        <div class="quanly_items">
+          <div class="quanly_items-l">
+            <div class="quanly_item-l">
+              <img th th:src="*{edit.tps_Image}" alt="" />
+              <input type="file" name="mulimage"id="fileInput2"  accept="image/*"  />
+              <input type="hidden" name="image" th:value="${edit.tps_Image}">
+            </div>
+          </div>
+          <div class="quanly_items-r">
+            <div class="quanly_item-r" style="position: absolute; width: 500px; right: 170px; top: 220px;">
+              <label for="">Tên Danh Mục</label>
+              <input
+                      type="text"
+                      name="name"
+                      id=""
+                      placeholder="Nhập Tên Danh Mục ...."  th:value="${edit.tps_Name}" required/>
+              <input
+                      type="hidden"
+                      name="id"
+                      id=""
+                      placeholder="Nhập Tên Danh Mục ...."  th:value="${edit.tps_Id}"/>
+            </div>
+          </div>
+        </div>
+        <div class="quanLy-btn bottom-height" style="position: absolute; right: 275px; top: 340px;">
+
+          <button type="submit" formaction="/admin/danh-muc/save">Chỉnh Sửa </button>
+
+        <a th:href="@{|/admin/danh-muc/edit/?id=${edit.tps_Id}|}">  <button type="button" >Reset</button></a>
+        <a href="/admin/danh-muc" >  <button type="button" >Thêm Mới</button></a>
+        </div>
+      </div></form></div>
+
+      <div th:unless="${edit}">
+        <form method="post" enctype="multipart/form-data">
+          <div class="auto-scroll">
+            <h1 style="text-align: center">Quản Lý Danh Mục</h1>
+
+            <div class="quanly_items">
+              <div class="quanly_items-l">
+                <div class="quanly_item-l">
+                  <img  alt=""  src="/image/noimage.jpg" />
+                  <input type="file" name="mulimage"id="fileInput2" accept="image/*" required  />
+                </div>
+              </div>
+              <div class="quanly_items-r">
+                <div class="quanly_item-r" style="position: absolute; width: 500px; right: 200px; top: 180px;">
+                  <label for="">Tên Danh Mục</label>
+                  <input
+                          type="text"
+                          name="name"
+                          id=""
+                          placeholder="Nhập Tên Danh Mục ...." required/>
+                </div>
+              </div>
+            </div>
+            <div class="quanLy-btn bottom-height" style="position: absolute; right: 395px; top: 250px;">
+              <button type="submit" formaction="/admin/danh-muc/create">Create</button>
+              <a href="/admin/danh-muc" >
+              <button type="button" >Đặt Lai</button></a>
+            </div>
+          </div></form></div>
+
+    </div>
+    <div id="danhSach" class="w3-container city" style="display: none">
+      <h1 style="text-align: center;">Quản Lý Danh Mục</h1>
+      <div class="admin-qltk-right-top-1">
+
+        <input style="margin-left: 12px; padding: 10px;" type="text" id="searchInput"  placeholder="Tìm kiếm..." oninput="search()">
+
+      </div>
+      <table id="customers">
+
+
+        <tr>
+          <th>Ảnh</th>
+          <th>Tên Danh Mục</th>
+          <th>Hành Động</th>
+        </tr>
+        <tr th:each="p:${category}">
+          <td ><img th:src="${p.tps_Image}"></td>
+          <td th:text="${p.tps_Name}"></td>
+          <td>
+            <ion-icon name="trash-outline"></ion-icon>
+            <a th:href="@{|/admin/danh-muc/edit/?id=${p.tps_Id}|}"> <ion-icon class="create_icon"  name="create-outline"></ion-icon></a>
+          </td>
+        </tr>
+      </table>
+      <div class="pagination" style="padding: 40px 300px">
+        <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+        <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+        </a>
+    </span>
+        <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    function search() {
+      var searchInput = document.getElementById("searchInput");
+      var search = searchInput.value;
+      $.ajax({
+        url: '/admin/danh-muc',
+        type: 'GET',
+        data: {
+          page: 1,
+          keyword: search
+        },
+        success: function(response) {
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+
+  </script>
+  <script th:inline="javascript">
+    function loadPage(page, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      $.ajax({
+        url: '/admin/danh-muc',
+        data: {
+          page: page
+        },
+        success: function(response) {
+          // Cập nhật nội dung danh sách tài khoản
+          var table = $(response).find("#customers").html();
+          $("#customers").html(table);
+          var pagination = $(response).find(".pagination").html();
+          $(".pagination").html(pagination);
+        },
+        error: function(xhr, status, error) {
+          console.log("Error: " + error);
+        }
+      });
+    }
+  </script>
+  </div>
+</body>
+</html>

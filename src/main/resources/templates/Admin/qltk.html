@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="admin-qltk-right-bot" th:fragment="main">
+    <h1 style="text-align: center; margin-top: 30px;">Quản Lý Tài Khoản</h1>
+
+    <div id="w33" class="w3-bar">
+        <button class="w3-bar-item w3-button active" onclick="openCity('quanLy')"> Quản Lý</button>
+        <button class="w3-bar-item w3-button" onclick="openCity('danhSach')"> Danh Sách</button>
+    </div>
+    <div th:if="${account}">
+    <form method="post" name="myForm" onsubmit="return validateForm()">
+    <div id="quanLy" class="w3-container city"  >
+        <div class="quanly_items">
+            <div class="quanly_items-l">
+                <div class="quanly_item-l">
+                    <img th:src="*{account.tps_Photo}" alt="" />
+                </div>
+            </div>
+            <div class="quanly_items-r"  >
+                <div class="quanly_item-r">
+                    <label for="">Tài Khoản</label>
+                    <input required
+                            type="text"
+
+                            id=""
+                            placeholder="Nhập tài khoản ...." th:field="*{account.tps_Username}" readonly />
+                    <input type="hidden" name="username"  th:value="*{account.tps_Username}" />
+
+                </div>
+                <div class="quanly_item-r">
+                    <label for="">Mật Khẩu</label>
+                    <input
+
+                            name="password"
+                            id=""
+                            placeholder="Nhập mật khẩu ...." th:field="*{account.tps_Password}" readonly />
+                    <input type="hidden" name="password"  th:value="*{account.tps_Password}" />
+                </div>
+                <div class="quanly_item-r">
+                    <label for="">Họ Tên</label>
+                    <input
+                            type="text"
+
+                            id=""
+                            placeholder="Nhập Họ Tên ...."  th:field="*{account.tps_Fullname}" readonly />
+                    <input type="hidden" name="fullname"  th:value="*{account.tps_Fullname}" />
+
+                </div>
+
+
+                <div class="quanly_items-r-radio">
+                    <label for="">Kích Hoạt Tài Khoản: </label>
+
+                    <div class="quanly_item-r-radio">
+                        <input type="radio" id="html" name="radio" th:checked="*{account.tps_Active == true}" th:value="kickhoat" />
+<!--                        <input type="hidden" name="username"  th:value="*{account.tps_Username}" />-->
+                        <label for="html">Kích Hoạt</label>
+
+                    </div>
+
+                    <div class="quanly_item-r-radio">
+                        <input type="radio" id="css" name="radio" th:checked="*{account.tps_Active ==false}" th:value="chuakichhoat" />
+                        <label for="css">Chưa Kích Hoạt</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="quanLy-btn">
+<!--            <button type="submit" formaction="/admin/tai-khoan/create">Create</button>-->
+            <button formaction="/admin/tai-khoan/save">Lưu</button>
+            <a th:href="@{|/admin/tai-khoan/edit?username=${account.tps_Username}|}"><button type="button">Reset</button></a>
+            <a th:href="@{|/admin/tai-khoan|}"><button type="button">Thêm Mới</button></a>
+
+        </div>
+    </div>
+    </form>
+    </div>
+    <div th:unless="${account}">
+        <form method="post"  enctype="multipart/form-data"  name="myForm" onsubmit="return validateForm()">
+            <div id="quanLy" class="w3-container city">
+
+                <div class="quanly_items">
+                    <div class="quanly_items-l">
+                        <div class="quanly_item-l">
+                            <img  alt=""  src="/image/noimage.jpg"/>
+                            <input type="file" name="mulimage"id="fileInput2" accept="image/*" />
+                        </div>
+                    </div>
+                    <div class="quanly_items-r"  >
+                        <div class="quanly_item-r">
+                            <label for="">Tài Khoản</label>
+                            <input
+                                    type="text"
+                                    name="username"
+                                    id=""
+                                    placeholder="Nhập tài khoản ...."  />
+                        </div>
+                        <div class="quanly_item-r">
+                            <label for="">Mật Khẩu</label>
+                            <input
+                                    type="password"
+                                    name="password"
+                                    id=""
+                                    placeholder="Nhập mật khẩu ...." />
+                        </div>
+                        <div class="quanly_item-r">
+                            <label for="">Họ Tên</label>
+                            <input
+                                    type="text"
+                                    name="hoten"
+                                    id=""
+                                    placeholder="Nhập Họ Tên ...." />
+                        </div>
+
+
+                        <div class="quanly_items-r-radio">
+                            <label for="">Kích Hoạt Tài Khoản: </label>
+
+                            <div class="quanly_item-r-radio">
+                                <input type="radio" id="html" name="radio" th:value="kickhoat" checked />
+                                <label for="html">Kích Hoạt</label>
+                            </div>
+
+                            <div class="quanly_item-r-radio">
+                                <input type="radio" id="css" name="radio" th:value="chuakichhoat" />
+                                <label for="css">Chưa Kích Hoạt</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="quanLy-btn">
+                    <button type="submit" formaction="/admin/tai-khoan/create">Thêm</button>
+                    <a href="/admin/tai-khoan"><button type="button">Reset</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="danhSach" class="w3-container city" style="display: none">
+        <div class="admin-qltk-right-top">
+            <div class="admin-qltk-right-top-1">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm tài khoan..." oninput="search()">
+            </div>
+     </div>
+        <table id="customers">
+            <thead>
+            <tr>
+                <th>Tên đăng nhập</th>
+                <th>Mật khẩu</th>
+                <th>Họ tên</th>
+                <th>Trạng thái</th>
+                <th>Tác vụ</th>
+            </tr>
+            </thead>
+            <tbody id="accountTableBody">
+            <tr th:each="account : ${accountPage.accounts}">
+                <td th:text="${account.tps_Username}"></td>
+                <td>*************</td>
+                <td th:text="${account.tps_Fullname}"></td>
+                <td th:text="${account.tps_Active}"></td>
+                <td>
+                    <a th:href="@{|/admin/tai-khoan/edit?username=${account.tps_Username}|}"><ion-icon name="create-outline"></ion-icon></a>
+                    
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <div class="pagination" style="padding: 40px 300px">
+            <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
+            <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+            <span th:text="${page}"></span>
+         </a>
+    </span>
+            <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+        </div>
+
+</div>
+    <script>
+        function validateForm() {
+            var username = document.forms["myForm"]["username"].value;
+            var password = document.forms["myForm"]["password"].value;
+            var hoten = document.forms["myForm"]["hoten"].value;
+            var fileInput = document.getElementById('fileInput2');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+            if (username == "" || password == "" || hoten == "") {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return false;
+            }
+
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Vui lòng upload file ảnh có định dạng: .jpeg/.jpg/.png/.gif only.');
+                fileInput.value = '';
+                return false;
+            }
+        }
+    </script>
+
+    <script th:inline="javascript">
+        function loadPage(page, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            $.ajax({
+                url: '/admin/tai-khoan',
+                data: {
+                    page: page
+                },
+                success: function(response)   {
+                    // Cập nhật nội dung danh sách tài khoản
+                    var table = $(response).find("#customers").html();
+                    $("#customers").html(table);
+                    var pagination = $(response).find(".pagination").html();
+                    $(".pagination").html(pagination);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error: " + error);
+                }
+            });
+        }
+    </script>
+    <script>
+        function search() {
+            var searchInput = document.getElementById("searchInput");
+            var search = searchInput.value;
+            $.ajax({
+                url: '/admin/tai-khoan',
+                type: 'GET',
+                data: {
+                    page: 1,
+                    keyword: search
+                },
+                success: function(response) {
+                    var table = $(response).find("#customers").html();
+                    $("#customers").html(table);
+
+                    // Cập nhật phân trang
+                    var pagination = $(response).find(".pagination").html();
+                    $(".pagination").html(pagination);
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+    </script>
+</div>
+
+</body>
+</html>

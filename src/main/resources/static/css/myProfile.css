@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+.My-Profiles {
+    margin: 120px 300px 0px;
+    padding-bottom: 10px;
+}
+.My-Profiles h1 {
+    border-bottom: 1.5px solid #ddd;
+    padding: 5px 0px;
+    color: #e31c39;
+}
+.My-Profile {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0px;
+    margin-bottom: 40px;
+}
+/* .My-Profile .My-Profile-left h3 {
+  border-bottom: 1px solid #000;
+} */
+.My-Profile .My-Profile-left input {
+    width: 100%;
+    padding: 8px 20px 8px 1px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ddd;
+    margin: 10px 0px 17px;
+    font-size: 16px;
+    overflow: hidden;
+}
+.My-Profile .My-Profile-left p {
+    color: gray;
+}
+.My-Profile-right #editButton,
+#editButton1,
+#editButton2 {
+    padding: 8px 25px;
+    border-radius: 30px;
+    border: 1px solid gray;
+    outline: none;
+    background-color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+}
+.My-Profile-right #editButton:hover,
+#editButton1:hover,
+#editButton2:hover {
+    opacity: 0.5;
+}
+.My-Profile-right #editButtons #saveButton,
+#editButtons1 #saveButton1,
+#editControls2 #saveButton2 {
+    padding: 8px 15px;
+    border-radius: 20px;
+    outline: none;
+    border: 1px solid #e31c39;
+    color: #e31c39;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+}
+.My-Profile-right #editButtons #saveButton:hover,
+#saveButton1:hover,
+#editControls2 #saveButton2:hover {
+    opacity: 0.5;
+}
+.My-Profile-right #editButtons #cancelButton,
+#editButtons1 #cancelButton1,
+#editControls2 #cancelButton2 {
+    padding: 8px 15px;
+    border-radius: 20px;
+    outline: none;
+    border: 1px solid gray;
+    color: gray;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+}
+.My-Profile-right {
+    display: flex;
+    justify-content: flex-end;
+}
+.My-Profile-rights {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 20px;
+    align-items: center;
+}
+.crud-img img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.edit-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 24px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2px 4px;
+}

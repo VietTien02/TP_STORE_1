@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en" th:replace="~{/Admin/index :: dynamic(~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+<div class="admin-qltk-right-bot" th:fragment="main">
+  <div class="admin-qltk-right-bot">
+    <div class="admin__lists">
+      <div class="admin__list">
+        <ion-icon class="cl_purple" name="eye"></ion-icon>
+        <div class="admin__list-content">
+          <span>Doanh thu trung bình theo tháng</span>
+          <h6 th:text="${avgRevenue}"></h6>
+        </div>
+      </div>
+      <div class="admin__list">
+        <ion-icon class="cl_blue" name="person"></ion-icon>
+        <div class="admin__list-content">
+          <span>Doanh thu trung bình theo ngày</span>
+          <h6 th:text="${avgRevenuePerDay}"></h6>
+        </div>
+      </div>
+      <div class="admin__list">
+        <ion-icon class="cl_green" name="cash"></ion-icon>
+        <div class="admin__list-content">
+          <span>Tổng doanh thu</span>
+          <h6 th:text="${tong}"></h6>
+        </div>
+      </div>
+      <div class="admin__list">
+        <ion-icon class="cl_orange" name="key"></ion-icon>
+        <div class="admin__list-content">
+          <span>Tổng số học viên</span>
+          <h6 th:text="${soluongngdung}"></h6>
+        </div>
+      </div>
+      <div class="admin__list">
+        <ion-icon class="cl_yellow" name="camera"></ion-icon>
+        <div class="admin__list-content">
+          <span>Tổng số khóa học đã bán</span>
+          <h6 th:text="${totalcourse}"></h6>
+        </div>
+      </div>
+      <div class="admin__list">
+        <ion-icon
+                class="cl_lightgreen"
+                name="chatbox-ellipses"></ion-icon>
+        <div class="admin__list-content">
+          <span>Trung bình số lượng khóa học bán</span>
+          <h6 th:text="${trungbinh}"></h6>
+        </div>
+      </div>
+      <div class="admin__list">
+        <ion-icon class="cl_pink" name="checkmark-circle"></ion-icon>
+        <div class="admin__list-content">
+          <span>Giao dịch thành công</span>
+          <h6 th:text="${sumgd}"></h6>
+        </div>
+      </div>
+      <div class="admin__list">
+        <ion-icon class="cl_red" name="construct"></ion-icon>
+        <div class="admin__list-content">
+          <span>Số Lượng Khóa Học</span>
+          <h6 th:text="${soluongcourse}"></h6>
+        </div>
+      </div>
+      <div class="time">
+        <button id="prev-year">Previous Year</button>
+        <time id="current-year" th:datetime="${year}" th:text="${year}"></time>
+        <button id="next-year">Next Year</button>
+      </div>
+
+
+    </div>
+
+    <div id="revenues">
+      <div th:each="revenue, i : ${monthlyRevenues}">
+        <input type="hidden" th:value="${revenue}">
+      </div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+  <script>
+    const prevBtn = document.getElementById("prev-year");
+    const nextBtn = document.getElementById("next-year");
+    const currentYear = document.getElementById("current-year");
+
+    prevBtn.addEventListener("click", function() {
+      const year = parseInt(currentYear.getAttribute("datetime")) - 1;
+      window.location.href = "/admin/doasboard?year=" + year;
+    });
+
+    nextBtn.addEventListener("click", function() {
+      const year = parseInt(currentYear.getAttribute("datetime")) + 1;
+      window.location.href = "/admin/doasboard?year=" + year;
+    });
+
+
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+  <script>
+
+
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+    var revenues = [];
+
+    // Lấy các giá trị doanh thu từ các thẻ input ẩn
+    $('input[type="hidden"]').each(function() {
+      revenues.push($(this).val());
+    });
+
+    // Hiển thị mảng revenues trong console để kiểm tra
+    console.log(revenues);
+
+       var myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          "Tháng 1",
+          "Tháng 2",
+          "Tháng 3",
+          "Tháng 4",
+          "Tháng 5",
+          "Tháng 6",
+          "Tháng 7",
+          "Tháng 8",
+          "Tháng 9",
+          "Tháng 10",
+          "Tháng 11",
+          "Tháng 12",
+        ],
+        datasets: [
+          {
+            label: "Doanh Thu",
+            data: revenues,
+            backgroundColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    var x, i, j, l, ll, selElmnt, a, b, c;
+    /*look for any elements with the class "custom-select":*/
+    x = document.getElementsByClassName("custom-select");
+    l = x.length;
+    for (i = 0; i < l; i++) {
+      selElmnt = x[i].getElementsByTagName("select")[0];
+      ll = selElmnt.length;
+      /*for each element, create a new DIV that will act as the selected item:*/
+      a = document.createElement("DIV");
+      a.setAttribute("class", "select-selected");
+      a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+      x[i].appendChild(a);
+      /*for each element, create a new DIV that will contain the option list:*/
+      b = document.createElement("DIV");
+      b.setAttribute("class", "select-items select-hide");
+      for (j = 1; j < ll; j++) {
+        /*for each option in the original select element,
+  create a new DIV that will act as an option item:*/
+        c = document.createElement("DIV");
+        c.innerHTML = selElmnt.options[j].innerHTML;
+        c.addEventListener("click", function (e) {
+          /*when an item is clicked, update the original select box,
+      and the selected item:*/
+          var y, i, k, s, h, sl, yl;
+          s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+          sl = s.length;
+          h = this.parentNode.previousSibling;
+          for (i = 0; i < sl; i++) {
+            if (s.options[i].innerHTML == this.innerHTML) {
+              s.selectedIndex = i;
+              h.innerHTML = this.innerHTML;
+              y = this.parentNode.getElementsByClassName("same-as-selected");
+              yl = y.length;
+              for (k = 0; k < yl; k++) {
+                y[k].removeAttribute("class");
+              }
+              this.setAttribute("class", "same-as-selected");
+              break;
+            }
+          }
+          h.click();
+        });
+        b.appendChild(c);
+      }
+      x[i].appendChild(b);
+      a.addEventListener("click", function (e) {
+        /*when the select box is clicked, close any other select boxes,
+    and open/close the current select box:*/
+        e.stopPropagation();
+        closeAllSelect(this);
+        this.nextSibling.classList.toggle("select-hide");
+        this.classList.toggle("select-arrow-active");
+      });
+    }
+    function closeAllSelect(elmnt) {
+      var x,
+              y,
+              i,
+              xl,
+              yl,
+              arrNo = [];
+      x = document.getElementsByClassName("select-items");
+      y = document.getElementsByClassName("select-selected");
+      xl = x.length;
+      yl = y.length;
+      for (i = 0; i < yl; i++) {
+        if (elmnt == y[i]) {
+          arrNo.push(i);
+        } else {
+          y[i].classList.remove("select-arrow-active");
+        }
+      }
+      for (i = 0; i < xl; i++) {
+        if (arrNo.indexOf(i)) {
+          x[i].classList.add("select-hide");
+        }
+      }
+    }
+    document.addEventListener("click", closeAllSelect);
+    var activeSpan = null;
+    function activate(span) {
+      if (activeSpan) {
+        activeSpan.classList.remove("active");
+      }
+      span.classList.add("active");
+      activeSpan = span;
+    }
+    const accordion = document.getElementsByClassName("contentBx");
+    for (i = 0; i < accordion.length; i++) {
+      accordion[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+      });
+
+      const content =
+              accordion[i].getElementsByClassName("accordion-content")[0];
+      content.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+    }
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+    window.onclick = function (event) {
+      if (!event.target.matches(".dropbtn")) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains("show")) {
+            openDropdown.classList.remove("show");
+          }
+        }
+      }
+    };
+  </script>
+</div>
+</body>
+</html>

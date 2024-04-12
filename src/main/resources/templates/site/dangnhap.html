@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng Nhập</title>
+    <link rel="shortcut icon" href="/image/logo.jpg" type="image/x-icon" />
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/rps_mobile.css" />
+</head>
+<body>
+<form th:action="@{/auth/signin}" method="post">
+<div class="container">
+      <div class="form-login" style="background-color: #fff">
+        <div class="form-login-image">
+         <a th:href="@{/}"> <img style="height: 60px; width: auto" src="/image/logo.jpg" alt="" /></a>
+        </div>
+        <h1 style="text-align: center; padding: 10px">Đăng Nhập</h1>
+    <div class="form-login-input">
+      <input type="text" name="username" class="form-input" placeholder=" " />
+      <label for="name"  class="form-label">Tài Khoản</label>
+    </div>
+    <div class="form-login-input">
+      <input name="password"
+              type="password"
+              class="form-input input"
+              id="password"
+              placeholder=" " />
+      <label for="name"  name="password" class="form-label">Mật Khẩu</label>
+      <i class="fa-regular fa-eye eye-open hidden"></i>
+      <i class="fa-regular fa-eye-slash eye-close"></i>
+    </div>
+    <span style="color: red " th:text="${message}"></span>
+    <div class="remember">
+      <input name="remember" type="checkbox"  id="" />
+      <span>Lưu thông tin đăng nhập</span>
+    </div>
+    <div class="btn-login">
+      <button type="submit">Đăng Nhập</button>
+    </div>
+    <div class="forgot">
+      <a th:href="@{/quenpass}"><span>Quên mật khẩu ?</span></a>
+    </div>
+    <div class="or">
+      <span class="or-left"></span>
+      <span class="or-center">OR</span>
+      <span class="or-right"></span>
+    </div>
+    <div class="login-with">
+<!--      <div class="login-facebook logins">-->
+<!--        <img src="/Img/fb1.png" alt="" />-->
+<!--        <a href=""><span>Login with Facebook</span></a>-->
+<!--      </div>-->
+<!--      <div class="login-google logins">-->
+<!--        <img src="/image/gg.png" alt="" />-->
+<!--        <a th:href="@{/auth/signin/google}"><span>Đăng Nhập với Google</span></a>-->
+<!--      </div>-->
+    </div>
+  </div>
+  <div class="form-login-2">
+    <span>Bạn chưa có tài khoản ? <a th:href="@{/auth/signup}">Đăng ký ngay</a></span>
+  </div>
+</div>
+</form>
+<script>
+  const input = document.querySelector(".input");
+  const eyeOpen = document.querySelector(".eye-open");
+  const eyeClose = document.querySelector(".eye-close");
+  eyeOpen.addEventListener("click", function () {
+    eyeOpen.classList.add("hidden");
+    eyeClose.classList.remove("hidden");
+    input.setAttribute("type", "password");
+  });
+  eyeClose.addEventListener("click", function () {
+    eyeOpen.classList.remove("hidden");
+    eyeClose.classList.add("hidden");
+    input.setAttribute("type", "text");
+  });
+</script>
+</body>
+</html>

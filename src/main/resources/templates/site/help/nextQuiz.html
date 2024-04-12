@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{/site/index :: dynamic(~{::main})}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+</head>
+<body>
+<div th:fragment="main">
+
+  <div class="erorr">
+    <ion-icon style="color: lawngreen" name="happy-outline"></ion-icon>
+    <h1>Chúc Mừng</h1>
+    <p th:text="'Bạn Đã Hoàn Thành Bài Kiểm Tra Điểm Số Của Bạn Là : '+${score}"> </p>
+    <a th:href="@{|/learning/${nextContent}/${course}|}"><button>Học Tiếp</button></a>
+  </div>
+</div>
+
+<script
+
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

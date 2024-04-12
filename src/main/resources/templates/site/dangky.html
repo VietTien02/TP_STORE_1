@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng Ký</title>
+  <link rel="shortcut icon" href="/image/logo.jpg" type="image/x-icon" />
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/rps_mobile.css" />
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <form action="/dang-ky" method="post">
+  <div class="form-login">
+    <div class="form-login-image">
+      <a th:href="@{/}"> <img style="height: 60px; width: auto" src="/image/logo.jpg" alt="" /></a>
+        </div>
+    <div  th:text="${error}" class="alert alert-danger" style="color: red"></div>
+    <h1 style="text-align: center; padding: 10px">Đăng Ký</h1>
+    <div class="form-login-input">
+      <input type="text" name="tps_Gmail" class="form-input" placeholder=" " />
+      <label for="name" class="form-label">Email</label>
+      <span name="error-email" style="color: red"></span>
+    </div>
+    <div class="form-login-input">
+      <input  name="tps_Password"
+              type="password"
+              class="form-input input-1"
+              id="password-1"
+              placeholder=" " />
+      <label for="name" class="form-label">Mật Khẩu</label>
+      <i class="fa-regular fa-eye eye-open hidden"></i>
+      <i class="fa-regular fa-eye-slash eye-close"></i>
+      <span name="error-password1" style="color: red"></span>
+    </div>
+    <div class="form-login-input">
+      <input  name="tps_Password2"
+              type="password"
+              class="form-input input-2"
+              id="password-2"
+              placeholder=" " />
+      <label for="name" class="form-label">Nhập Lại Mật Khẩu</label>
+      <i class="fa-regular fa-eye eye-open hidden"></i>
+      <i class="fa-regular fa-eye-slash eye-close"></i>
+      <span name="error-password2" style="color: red"></span>
+    </div>
+
+    <div class="form-login-input">
+      <input  name="fullname"
+             
+              class="form-input input"
+
+              placeholder=" "  required/>
+      <label for="name" class="form-label">Nhập Họ Và Tên</label>
+      
+      <span name="error-password2" style="color: red"></span>
+    </div>
+
+<!--    <div class="form-login-input">-->
+<!--      <input type="text" class="form-input" name=" tps_Number" placeholder=" " />-->
+<!--      <label for="name" class="form-label">Phone</label>-->
+<!--    </div>-->
+<!--    <div class="form-login-input">-->
+<!--      <input type="text"  name="macode" disabled class="form-input" placeholder=" " />-->
+<!--      <button>Gửi Mã</button>-->
+<!--    </div>-->
+
+    <div class="btn-login">
+      <button type="submit">Đăng Ký</button>
+    </div>
+    <div class="or">
+      <span class="or-left"></span>
+      <span class="or-center">OR</span>
+      <span class="or-right"></span>
+    </div>
+  </div>
+  <div class="form-login-2">
+    <span>Bạn đã có tài khoản ? <a th:href="@{/auth/signin}">Đăng nhập ngay</a></span>
+  </div>
+  </form>
+</div>
+<script>
+  const form = document.querySelector('form');
+  const password1Input = document.querySelector('input[name="tps_Password"]');
+  const password2Input = document.querySelector('input[name="tps_Password2"]');
+  const emailInput = document.querySelector('input[name="tps_Gmail"]');
+  const errorUsername = document.querySelector('span[name="error-username"]');
+  const errorPassword1 = document.querySelector('span[name="error-password1"]');
+  const errorPassword2 = document.querySelector('span[name="error-password2"]');
+  const errorEmail = document.querySelector('span[name="error-email"]');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    // Check for empty fields
+    let isEmpty = false;
+    if (emailInput.value.trim() === '') {
+      emailInput.classList.add('error');
+      errorEmail.textContent = 'Vui lòng Nhập Email';
+      isEmpty = true;
+    } else {
+      emailInput.classList.remove('error');
+      errorEmail.textContent = '';
+    }
+
+
+    if (password1Input.value.trim() === '') {
+      password1Input.classList.add('error');
+      errorPassword1.textContent = 'mật khẩu là bắt buộc';
+      isEmpty = true;
+    } else {
+      password1Input.classList.remove('error');
+      errorPassword1.textContent = '';
+    }
+
+    if (password2Input.value.trim() === '') {
+      password2Input.classList.add('error');
+      errorPassword2.textContent = 'Vui lòng xác nhận mật khẩu của bạn';
+      isEmpty = true;
+    } else {
+      password2Input.classList.remove('error');
+      errorPassword2.textContent = '';
+    }
+
+    if (isEmpty) {
+      alert('Xin vui lòng điền đầy đủ thông tin vào các ô bắt buộc');
+      return;
+    }
+
+    // Check if passwords match
+    if (password1Input.value !== password2Input.value) {
+      password1Input.classList.add('error');
+      password2Input.classList.add('error');
+      errorPassword1.textContent = 'Mật khẩu không phù hợp';
+      errorPassword2.textContent = 'Mật khẩu không phù hợp';
+      return;
+    } else {
+      password1Input.classList.remove('error');
+      password2Input.classList.remove('error');
+      errorPassword1.textContent = '';
+      errorPassword2.textContent = '';
+    }
+    const usernameRegex = /^[a-zA-Z0-9_-]{6,}$/;
+    const passwordRegex = /^.{9,}$/;
+    let isInvalid = false;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value.trim())) {
+      emailInput.classList.add('error');
+      errorEmail.textContent = 'Email không hợp lệ !';
+      isInvalid = true;
+    } else {
+      emailInput.classList.remove('error');
+      errorEmail.textContent = '';
+    }
+
+    if (!passwordRegex.test(password1Input.value.trim())) {
+      password1Input.classList.add('error');
+      errorPassword1.textContent = 'Mật khẩu không hợp lệ. Phải từ 9 kí tự.';
+      isInvalid = true;
+    } else {
+      password1Input.classList.remove('error');
+      errorPassword1.textContent = '';
+    }
+
+
+
+    if (isInvalid) {
+      alert('Thông tin không hợp lệ. Xin vui lòng kiểm tra lại.');
+      return;
+    }
+
+
+    // Submit the form
+    form.submit();
+  });
+
+</script>
+<script>
+      const input1 = document.querySelector(".input-1");
+      const eyeOpen1 = document.querySelector(".eye-open");
+      const eyeClose1 = document.querySelector(".eye-close");
+      eyeOpen1.addEventListener("click", function () {
+        eyeOpen1.classList.add("hidden");
+        eyeClose1.classList.remove("hidden");
+        input1.setAttribute("type", "password");
+      });
+      eyeClose1.addEventListener("click", function () {
+        eyeOpen1.classList.remove("hidden");
+        eyeClose1.classList.add("hidden");
+        input1.setAttribute("type", "text");
+      });
+      const input2 = document.querySelector(".input-2");
+      const eyeOpen2 = document.querySelectorAll(".eye-open")[1];
+      const eyeClose2 = document.querySelectorAll(".eye-close")[1];
+      eyeOpen2.addEventListener("click", function () {
+        eyeOpen2.classList.add("hidden");
+        eyeClose2.classList.remove("hidden");
+        input2.setAttribute("type", "password");
+      });
+      eyeClose2.addEventListener("click", function () {
+        eyeOpen2.classList.remove("hidden");
+        eyeClose2.classList.add("hidden");
+        input2.setAttribute("type", "text");
+      });
+    </script>
+</body>
+</html>
