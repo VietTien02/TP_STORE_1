@@ -71,4 +71,11 @@ public class PymentRequestDTO {
         return vnp_SecureHash;
     }
 
+    public static void main(String[] args) {
+        PymentRequestDTO pymentRequestDTO = new PymentRequestDTO();
+        pymentRequestDTO.generateUrl();
+        System.out.println(pymentRequestDTO.generateHash());
+
+    }
+
 }

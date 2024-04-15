@@ -12,6 +12,6 @@ public class SmsController {
 
     @RequestMapping("/send-sms")
     public void sendSms() {
-        smsService.sendSms("+84346732847", "hello");
+        smsService.sendSms("+84815767495", "em chào anh Tiến");
     }
 }
