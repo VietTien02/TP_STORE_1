@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.pts</groupId>
-    <artifactId>TP_Store</artifactId>
+    <artifactId>VT_Store</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>J6</name>
     <description>TP_Store</description>

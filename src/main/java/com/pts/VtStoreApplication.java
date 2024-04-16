@@ -3,7 +3,6 @@ package com.pts;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
@@ -18,10 +17,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 //            ,"com.pts.entity"
 //            ,"com.pts.help",
 //            "com.pts.Config","com.pts.DTO"})
-public class TpStoreApplication {
+public class VtStoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TpStoreApplication.class, args);
+        SpringApplication.run(VtStoreApplication.class, args);
     }
 
 }
