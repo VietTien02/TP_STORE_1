@@ -40,25 +40,41 @@ import java.util.UUID;
         private String resetToken;
 
         public void generateActivationToken() {
-            String identifier = UUID.randomUUID().toString(); // generate a unique identifier
-            long timestamp = new Date().getTime(); // get the current timestamp
-            String plaintext = identifier + ":" + timestamp; // combine the identifier and timestamp
-            String token = encrypt(plaintext); // encrypt the combination
-            this.activationToken = token; // set the activation token on the account
+            // Tạo chuỗi ngẫu nhiên sử dụng UUID
+            String identifier = UUID.randomUUID().toString();
+            // Lấy thời gian hiện tại
+            long timestamp = new Date().getTime();
+            // Kết hợp chuỗi ngẫu nhiên và timestamp với dấu hai chấm ":"
+            String plaintext = identifier + ":" + timestamp;
+            // Mã hóa chuỗi plaintext để tạo mã kích hoạt
+            String token = encrypt(plaintext);
+            // Lưu trữ mã kích hoạt vào biến instance activationToken
+            this.activationToken = token;
         }
 
-
+    public static void main(String[] args) {
+        String identifier = UUID.randomUUID().toString(); // generate a unique identifier
+        long timestamp = new Date().getTime(); // get the current timestamp
+        String plaintext = identifier + ":" + timestamp; // combine the identifier and timestamp
+        String token = plaintext.toString(); // encrypt the combination
+        System.out.println("time" + timestamp);; // set the activation token on the account
+    }
         private String encrypt(String plaintext) {
             // use a secure encryption algorithm (e.g., AES) to encrypt the plaintext
             // and return the encrypted result as a string
             return plaintext;
         }
         public void generateResetToken() {
-            String identifier = UUID.randomUUID().toString(); // generate a unique identifier
-            long timestamp = new Date().getTime(); // get the current timestamp
-            String plaintext = identifier + ":" + timestamp; // combine the identifier and timestamp
-            String token = encrypt(plaintext); // encrypt the combination
-            this.resetToken = token; // set the reset token on the account
+            // Tạo chuỗi ngẫu nhiên sử dụng UUID
+            String identifier = UUID.randomUUID().toString();
+            // Lấy thời gian hiện tại
+            long timestamp = new Date().getTime();
+            // Kết hợp chuỗi ngẫu nhiên và timestamp với dấu hai chấm ":"
+            String plaintext = identifier + ":" + timestamp;
+            // Mã hóa chuỗi plaintext để tạo mã kích hoạt
+            String token = encrypt(plaintext);
+            // Lưu trữ mã kích hoạt vào biến instance activationToken
+            this.activationToken = token;
         }
     //    @OneToMany(mappedBy = "account")
     //    List<Notification> notifications;

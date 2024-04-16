@@ -110,12 +110,7 @@ public class PaymentController {
         String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
         resp.setStatus(HttpServletResponse.SC_FOUND);
         resp.setHeader("Location", paymentUrl);
-//        com.google.gson.JsonObject job = new JsonObject();
-//        job.addProperty("code", "00");
-//        job.addProperty("message", "success");
-//        job.addProperty("data", paymentUrl);
-//        Gson gson = new Gson();
-//        resp.getWriter().write(gson.toJson(job));
+
         return "redirect:" + paymentUrl;
     }
 

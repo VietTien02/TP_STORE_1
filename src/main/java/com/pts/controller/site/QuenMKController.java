@@ -31,22 +31,25 @@ public class QuenMKController {
         Account acc=accountDAO.laytk(email);
         if(acc!=null){
             if(!acc.getTps_Active()){
-                m.addAttribute("error","Tài Khoản không tồn tại");
+                m.addAttribute("error","Tài khoản của bạn chưa được kích hoạt");
                 return "site/quenmatkhau";
             }else{
 
                 acc.generateResetToken();
                 accountDAO.save(acc);
                 String token=acc.getResetToken();
-                String activationUrl = "http://localhost:8080/quenmk?token=" +token;
+                String activationUrl = "http://localhost:80/quenmk?token=" +token;
 
-                mailer.send( acc.getTps_Username(),"<h1>Quên Mật Khẩu</h1>","Xin Chào  Chúng tôi đã nhận được yêu cầu Quên Mật Khẩu vào F5 bằng địa chỉ email này. Nếu bạn muốn Thay Đổi Mật Khẩu bằng tài khoản "+acc.getTps_Username()+" của mình, hãy nhấp vào liên kết:"+"<a href='" + activationUrl + "'>tại đây</a>");
+                mailer.send( acc.getTps_Username(),"Quên mật khẩu","Xin Chào  Chúng tôi đã nhận được yêu cầu Quên Mật Khẩu vào F5 bằng địa chỉ email này. Nếu bạn muốn Thay Đổi Mật Khẩu bằng tài khoản "+acc.getTps_Username()+" của mình, hãy  click vào liên kết:"+"<a href='" + activationUrl + "'>tại đây</a>");
 
-                m.addAttribute("error","Quên Mật Khẩu Thành Công, Vui lòng kiểm tra email");
+                m.addAttribute("error","Thông tin tài khoản của bạn sẽ được gửi vào email! Vui lòng kiểm tra email");
                 return "site/quenmatkhau";
             }
+        }else {
+            m.addAttribute("error","Tài khoản này không tồn tại");
+            return "site/quenmatkhau";
         }
-        return "site/quenmatkhau";
+
 
     }
 
@@ -61,14 +64,14 @@ public class QuenMKController {
     public String quenmk(Model m, @RequestParam("token") String token, @RequestParam("password") String password) {
         Account acc = accountDAO.laytokenreset(token);
         if (acc == null) {
-            String script = "<script>alert('Mã Token Đã Hết Hạn');</script>";
+            String script = "<script>alert('Mã Token đã hết hạn. Vui lòng thử lại');</script>";
             m.addAttribute("script", script);
             return "site/quenmk";
         } else {
             acc.setTps_Password(password);
             acc.setResetToken(null);
             accountDAO.save(acc);
-            String script = "<script>alert('mật khẩu đã được thay đổi');</script>";
+            String script = "<script>alert('mật khẩu đã được thay đổi. Bạn hãy đăng nhập ');</script>";
             m.addAttribute("script", script);
             return "site/quenmk";
         }

@@ -10,6 +10,11 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/rps_mobile.css" />
+  <style>
+    .no-underline {
+      text-decoration: none; /* Loại bỏ gạch chân */
+    }
+  </style>
   <script src="/js/quenmk.js" defer></script>
 </head>
 <body>
@@ -28,6 +33,8 @@
               class="form-input input-1"
               id="password-1"
               placeholder=" " />
+      <span name="error-password1" style="color: red"></span>
+
       <label for="name" class="form-label">Nhập Mật Khẩu Mới</label>
       <i class="fa-regular fa-eye eye-open hidden"></i>
       <i class="fa-regular fa-eye-slash eye-close"></i>
@@ -38,14 +45,19 @@
               class="form-input input-2"
               id="password-2"
               placeholder=" " />
+      <span name="error-password1" style="color: red"></span>
+
       <label for="name" class="form-label">Nhập Lại Mật Khẩu Mới</label>
       <i class="fa-regular fa-eye eye-open hidden"></i>
       <i class="fa-regular fa-eye-slash eye-close"></i>
     </div>
     <div class="btn-login" style="margin-bottom: 25px">
       <button  type="submit" style="height: 45px">Xác Nhận</button>
-      <input type="hidden" name="token" th:value="${token}" />
+      <input type="hidden" name="token" th:value="${token}" /><br>
+
     </div>
+      <p></p>
+      <p> <a class="no-underline" href="http://localhost:80/auth/signin"> Click để đăng nhập.  </a></p>
   </div>
   </form>
 </div>

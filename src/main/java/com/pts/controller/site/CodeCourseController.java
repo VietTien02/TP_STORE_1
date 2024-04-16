@@ -31,7 +31,6 @@
 
             String username=request.getRemoteUser();//lay username
             CourseCode Code =courseCodeDAO.laymacode(code);//thuc hien truy van kiem tra ma code nguoi dung nhap
-
             //neu code sai
             if(Code == null) {
                 return new ResponseEntity<>("invalid", HttpStatus.BAD_REQUEST);

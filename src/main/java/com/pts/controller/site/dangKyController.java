@@ -56,9 +56,9 @@ public class dangKyController {
                 acc.setTps_Password(password);
                 acc.setTps_Fullname(fullname);
                 accountDAO.save(acc);
-                String activationUrl = "http://localhost:8080/activate?token=" + acc.getActivationToken();
+                String activationUrl = "http://localhost:80/activate?token=" + acc.getActivationToken();
                 m.addAttribute("error", "Tài Khoản đang chờ kích hoạt Vui lòng kiểm tra gmail!");
-                mailer.send(username,"Kích Hoạt Tài Khoản","Xin Chào  Chúng tôi đã nhận được yêu cầu đăng nhập vào CrouseOnline bằng địa chỉ email này. Nếu bạn muốn đăng nhập bằng tài khoản "+acc.getTps_Username()+" của mình, hãy nhấp vào liên kết:"+"<a href='" + activationUrl + "'>tại đây</a>");
+                mailer.send(username,"Kích Hoạt Tài Khoản","Xin Chào  Chúng tôi đã nhận được yêu cầu đăng nhập vào F5 bằng địa chỉ email này. Nếu bạn muốn đăng nhập bằng tài khoản "+acc.getTps_Username()+" của mình, hãy nhấp vào liên kết:"+"<a href='" + activationUrl + "'>tại đây</a>");
                 return "site/dangky";
             }
         }
@@ -75,9 +75,9 @@ public class dangKyController {
         acc.generateActivationToken();
         userServiceIml.save(acc);
         authorityService.save(acc);
-        String activationUrl = "http://localhost:8080/activate?token=" + acc.getActivationToken();
+        String activationUrl = "http://localhost:80/activate?token=" + acc.getActivationToken();
         m.addAttribute("error", "Tài Khoản đang chờ kích hoạt Vui lòng kiểm tra gmail!");
-        mailer.send(username,"Kích Hoạt Tài Khoản","Xin Chào  Chúng tôi đã nhận được yêu cầu đăng nhập vào CrouseOnline bằng địa chỉ email này. Nếu bạn muốn đăng nhập bằng tài khoản "+acc.getTps_Username()+" của mình, hãy nhấp vào liên kết:"+"<a href='" + activationUrl + "'>tại đây</a>");
+        mailer.send(username,"Kích Hoạt Tài Khoản","Xin Chào  Chúng tôi đã nhận được yêu cầu đăng nhập vào F5 địa chỉ email này. Nếu bạn muốn đăng nhập bằng tài khoản "+acc.getTps_Username()+" của mình, hãy nhấp vào liên kết:"+"<a href='" + activationUrl + "'>tại đây</a>");
 
         return "site/dangky";
     }

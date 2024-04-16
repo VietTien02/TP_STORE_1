@@ -140,8 +140,8 @@
     if (password1Input.value !== password2Input.value) {
       password1Input.classList.add('error');
       password2Input.classList.add('error');
-      errorPassword1.textContent = 'Mật khẩu không phù hợp';
-      errorPassword2.textContent = 'Mật khẩu không phù hợp';
+      //errorPassword1.textContent = 'Mật khẩu không phù hợp';
+      errorPassword2.textContent = 'Mật khẩu nhập lại không khớp';
       return;
     } else {
       password1Input.classList.remove('error');
@@ -165,20 +165,17 @@
 
     if (!passwordRegex.test(password1Input.value.trim())) {
       password1Input.classList.add('error');
-      errorPassword1.textContent = 'Mật khẩu không hợp lệ. Phải từ 9 kí tự.';
+      errorPassword1.textContent = 'Mật khẩu phải từ 9 kí tự.';
       isInvalid = true;
     } else {
       password1Input.classList.remove('error');
       errorPassword1.textContent = '';
     }
 
-
-
     if (isInvalid) {
-      alert('Thông tin không hợp lệ. Xin vui lòng kiểm tra lại.');
+      alert('Thông tin không hợp lệ. Xin vui lòng kiểm tra lại !');
       return;
     }
-
 
     // Submit the form
     form.submit();
