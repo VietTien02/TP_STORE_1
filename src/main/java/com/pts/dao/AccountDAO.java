@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AccountDAO extends JpaRepository<Account,String> {
 
-    @Query("SELECT p FROM Account p WHERE p.tps_Username =?1")
+    @Query("SELECT p FROM Account p WHERE p.tps_Username = :username")
     Account laytk(String username);
 //    @Query("select p from Account p where p.tps_Gmail =?1")
 //    Account layemail(String username);
@@ -19,7 +19,7 @@ public interface AccountDAO extends JpaRepository<Account,String> {
     @Query("SELECT p FROM Account p WHERE p.resetToken=?1")
     Account laytokenreset(String token);
 
-    @Query("SELECT c FROM Account c WHERE c.tps_Username LIKE CONCAT('%', :keyword, '%')")
+    @Query("SELECT a FROM Account a WHERE (:keyword IS NULL OR :keyword = '') OR a.tps_Username LIKE CONCAT('%', :keyword, '%')")
     List<Account> timkiemacc(@Param("keyword") String keyword);
 
 

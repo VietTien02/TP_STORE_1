@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
 </head>
 <body>
 
@@ -137,9 +138,24 @@
                     </div>
                 </div>
                 <div class="quanLy-btn">
-                    <button type="submit" formaction="/admin/tai-khoan/create">Thêm</button>
+                    <button type="submit" >Thêm</button>
                     <a href="/admin/tai-khoan"><button type="button">Reset</button></a>
                 </div>
+                <div
+                        id="successMessage"
+                        class="success-message"
+                        style="display: none;  position: fixed;
+                        top: 90%;
+                        left: 80%;
+                        transform: translate(-50%, -50%);
+                        background-color: #4CAF50;
+                        color: white;
+                        padding: 15px;
+                        border-radius: 10px;
+                        z-index: 1000;">
+                    Thêm tài khoản thành công!
+                </div>
+
             </div>
         </form>
     </div>
@@ -205,7 +221,48 @@
                 return false;
             }
         }
+
+        $(document).ready(function() {
+            // Hiển thị thông báo khi thêm tài khoản thành công
+            function showSuccessMessage() {
+                $("#successMessage").fadeIn();
+
+                setTimeout(function() {
+                    $("#successMessage").fadeOut();
+                }, 3000); // 3000 milliseconds = 3 seconds
+            }
+
+            // Sử dụng Ajax để gửi yêu cầu thêm tài khoản
+            $("form").submit(function(event) {
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '/admin/tai-khoan/create',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        // Hiển thị thông báo khi thêm tài khoản thành công
+                        showSuccessMessage();
+
+                        // Cập nhật nội dung danh sách tài khoản (nếu cần)
+                        var table = $(response).find("#customers").html();
+                        $("#customers").html(table);
+
+                        // Cập nhật phân trang (nếu cần)
+                        var pagination = $(response).find(".pagination").html();
+                        $(".pagination").html(pagination);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error: " + error);
+                    }
+                });
+            });
+        });
     </script>
+
 
     <script th:inline="javascript">
         function loadPage(page, event) {

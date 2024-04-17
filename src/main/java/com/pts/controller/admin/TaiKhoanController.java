@@ -101,8 +101,23 @@ public class TaiKhoanController {
                        @RequestParam(defaultValue = "") String keyword,
                         @RequestParam("mulimage") MultipartFile file) throws IOException {
         Account acc = accountDAO.laytk(username);
-        if(acc != null){
-            m.addAttribute("message","tài khoản đã tồn tại");
+        if (acc != null) {
+            m.addAttribute("message", "Tài khoản đã tồn tại");
+            List<Account> accounts = accountDAO.timkiemacc(keyword);
+            int totalAccounts = accounts.size();
+            int totalPages = (int) Math.ceil(totalAccounts / (double) pageSize);
+
+            // Lấy danh sách tài khoản trên trang hiện tại
+            int start = (page - 1) * pageSize;
+            int end = Math.min(start + pageSize, totalAccounts);
+            List<Account> accountsOnPage = accounts.subList(start, end);
+
+            // Đưa thông tin về dữ liệu và phân trang vào Model
+            AccountPage accountPage = new AccountPage();
+            accountPage.setAccounts(accountsOnPage);
+            accountPage.setTotalPages(totalPages);
+            accountPage.setCurrentPage(page);
+            m.addAttribute("accountPage", accountPage);
             return "Admin/qltk";
         }
         Account ac = new Account();
@@ -133,6 +148,7 @@ public class TaiKhoanController {
         accountPage.setTotalPages(totalPages);
         accountPage.setCurrentPage(page);
         m.addAttribute("accountPage", accountPage);
+        m.addAttribute("message","Thêm tài khoản thành công");
         return "Admin/qltk";
 
     }

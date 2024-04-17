@@ -12,7 +12,7 @@
     <artifactId>VT_Store</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>J6</name>
-    <description>TP_Store</description>
+    <description>VT_Store</description>
     <properties>
         <java.version>11</java.version>
     </properties>
