@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quản lí tài khoản </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </head>
 <body>
@@ -85,19 +86,22 @@
     </form>
     </div>
     <div th:unless="${account}">
-        <form method="post"  enctype="multipart/form-data"  name="myForm" onsubmit="return validateForm()">
+        <form  action="/admin/create" method="post"  enctype="multipart/form-data"  name="myForm" onsubmit="return validateForm()">
             <div id="quanLy" class="w3-container city">
 
                 <div class="quanly_items">
                     <div class="quanly_items-l">
                         <div class="quanly_item-l">
-                            <img  alt=""  src="/image/noimage.jpg"/>
-                            <input type="file" name="mulimage"id="fileInput2" accept="image/*" />
+                            <label for="">Ảnh: <span style="color: red;"><b>*</b></span></label>
+                            <img id="previewImage" alt="Ảnh" src="/image/noimage.jpg"/>
+
+                            <input type="file" name="mulimage" id="fileInput2" accept="image/*" />
+
                         </div>
                     </div>
                     <div class="quanly_items-r"  >
                         <div class="quanly_item-r">
-                            <label for="">Tài Khoản</label>
+                            <label for="">Tài Khoản: <span style="color: red">*</span></label>
                             <input
                                     type="text"
                                     name="username"
@@ -105,7 +109,7 @@
                                     placeholder="Nhập tài khoản ...."  />
                         </div>
                         <div class="quanly_item-r">
-                            <label for="">Mật Khẩu</label>
+                            <label for="">Mật Khẩu: <span style="color: red">*</span></label>
                             <input
                                     type="password"
                                     name="password"
@@ -113,7 +117,7 @@
                                     placeholder="Nhập mật khẩu ...." />
                         </div>
                         <div class="quanly_item-r">
-                            <label for="">Họ Tên</label>
+                            <label for="">Họ Tên:</label>
                             <input
                                     type="text"
                                     name="hoten"
@@ -123,7 +127,7 @@
 
 
                         <div class="quanly_items-r-radio">
-                            <label for="">Kích Hoạt Tài Khoản: </label>
+                            <label for="">Kích Hoạt Tài Khoản:<span style="color: red; font-size: 20px" >*</span> </label>
 
                             <div class="quanly_item-r-radio">
                                 <input type="radio" id="html" name="radio" th:value="kickhoat" checked />
@@ -141,23 +145,41 @@
                     <button type="submit" >Thêm</button>
                     <a href="/admin/tai-khoan"><button type="button">Reset</button></a>
                 </div>
-                <div
-                        id="successMessage"
-                        class="success-message"
-                        style="display: none;  position: fixed;
-                        top: 90%;
-                        left: 80%;
-                        transform: translate(-50%, -50%);
-                        background-color: #4CAF50;
-                        color: white;
-                        padding: 15px;
-                        border-radius: 10px;
-                        z-index: 1000;">
-                    Thêm tài khoản thành công!
-                </div>
-
             </div>
         </form>
+    </div>
+    <div id="notification" class="notification" style="
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+        background-color: #159812;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;">
+        <span id="notificationMessage"></span>
+    </div>
+    <div id="erorrMessage" class="erorrMessage" style="
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+        background-color: #de7b00;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;">
+        <span id="erorrMessageId"></span>
+    </div>
+    <div id="erorrMessage1" class="erorrMessage1" style="
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+        background-color: #de7b00;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;">
+        <span id="erorrMessage2"></span>
     </div>
     <div id="danhSach" class="w3-container city" style="display: none">
         <div class="admin-qltk-right-top">
@@ -183,7 +205,6 @@
                 <td th:text="${account.tps_Active}"></td>
                 <td>
                     <a th:href="@{|/admin/tai-khoan/edit?username=${account.tps_Username}|}"><ion-icon name="create-outline"></ion-icon></a>
-                    
                 </td>
             </tr>
             </tbody>
@@ -201,7 +222,30 @@
         </div>
 
 </div>
+
+
     <script>
+        document.getElementById('fileInput2').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('previewImage').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        function validateFormMassage(message) {
+            var notificationMessage = document.getElementById("errorMessage1");
+            notificationMessage.innerText = message;
+
+            var notification = document.getElementById("errorMessage2");
+            notification.style.display = "block";
+
+            setTimeout(function() {
+                notification.style.display = "none";
+                window.location.reload();
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
         function validateForm() {
             var username = document.forms["myForm"]["username"].value;
             var password = document.forms["myForm"]["password"].value;
@@ -209,28 +253,51 @@
             var fileInput = document.getElementById('fileInput2');
             var filePath = fileInput.value;
             var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            var errorMessage = document.getElementById('errorMessage2');
 
             if (username == "" || password == "" || hoten == "") {
-                alert("Vui lòng nhập đầy đủ thông tin!");
+                errorMessage.textContent = "Vui lòng nhập đầy đủ thông tin!";
+                validateFormMassage(errorMessage.textContent);
                 return false;
             }
 
             if (!allowedExtensions.exec(filePath)) {
-                alert('Vui lòng upload file ảnh có định dạng: .jpeg/.jpg/.png/.gif only.');
+                errorMessage.textContent = 'Vui lòng upload file ảnh có định dạng: .jpeg/.jpg/.png/.gif only.';
+                validateFormMassage(errorMessage.textContent);
                 fileInput.value = '';
                 return false;
             }
+
+            // Nếu không có lỗi, trả về true để submit form
+        }
+        function showNotification(message) {
+            var notificationMessage = document.getElementById("notificationMessage");
+            notificationMessage.innerText = message;
+
+            var notification = document.getElementById("notification");
+            notification.style.display = "block";
+
+            setTimeout(function() {
+                notification.style.display = "none";
+                window.location.reload();
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
+
+        function showErorMessage(message) {
+            var notificationMessage = document.getElementById("erorrMessageId");
+            notificationMessage.innerText = message;
+
+            var notification = document.getElementById("erorrMessage");
+            notification.style.display = "block";
+
+            setTimeout(function() {
+                notification.style.display = "none";
+            }, 3000); // 3000 milliseconds = 3 seconds
         }
 
         $(document).ready(function() {
             // Hiển thị thông báo khi thêm tài khoản thành công
-            function showSuccessMessage() {
-                $("#successMessage").fadeIn();
 
-                setTimeout(function() {
-                    $("#successMessage").fadeOut();
-                }, 3000); // 3000 milliseconds = 3 seconds
-            }
 
             // Sử dụng Ajax để gửi yêu cầu thêm tài khoản
             $("form").submit(function(event) {
@@ -244,25 +311,21 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        // Hiển thị thông báo khi thêm tài khoản thành công
-                        showSuccessMessage();
-
-                        // Cập nhật nội dung danh sách tài khoản (nếu cần)
-                        var table = $(response).find("#customers").html();
-                        $("#customers").html(table);
-
-                        // Cập nhật phân trang (nếu cần)
-                        var pagination = $(response).find(".pagination").html();
-                        $(".pagination").html(pagination);
+                        if (response.startsWith("Error:")) {
+                            var errorMessage = response.substring(7); // Bỏ qua phần "Error: "
+                            alert(errorMessage);
+                        } else {
+                            showNotification(response); // Hiển thị thông báo thành công
+                            // Tải lại trang để cập nhật dữ liệu mới
+                        }
                     },
                     error: function(xhr, status, error) {
-                        console.log("Error: " + error);
+                        showErorMessage(xhr.responseText);
                     }
                 });
             });
         });
     </script>
-
 
     <script th:inline="javascript">
         function loadPage(page, event) {

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thay Đổi Ảnh</title>
+</head>
+<body>
+<input type="file" id="fileInput" accept="image/*">
+<img id="image" src="static/image/noimage.jpg" alt="Ảnh mặc định" style="max-width: 100%;">
+
+<script>
+  document.getElementById('fileInput').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      document.getElementById('image').src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
+</script>
+</body>
+</html>

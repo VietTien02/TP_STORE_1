@@ -10,6 +10,7 @@ import com.pts.entity.Account;
 import com.pts.entity.AccountPage;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -93,20 +94,19 @@ public class TaiKhoanController {
     }
 
     @PostMapping("/create")
-    public String them(Model m,@RequestParam("username")String username,
-                       @RequestParam("password")String password,
-                       @RequestParam("hoten")String hoten,
-                       @RequestParam("radio")String radio,
-                       @RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "") String keyword,
-                        @RequestParam("mulimage") MultipartFile file) throws IOException {
+    public ResponseEntity<String> them(Model m, @RequestParam(value = "username" , defaultValue = "")String username,
+                               @RequestParam(value = "password", defaultValue = "")String password,
+                               @RequestParam(value = "hoten", defaultValue = "")String hoten,
+                               @RequestParam(value = "radio", defaultValue = "")String radio,
+                               @RequestParam(defaultValue = "1") int page,
+                               @RequestParam(defaultValue = "") String keyword,
+                               @RequestParam("mulimage") MultipartFile file) throws IOException {
         Account acc = accountDAO.laytk(username);
         if (acc != null) {
-            m.addAttribute("message", "Tài khoản đã tồn tại");
             List<Account> accounts = accountDAO.timkiemacc(keyword);
             int totalAccounts = accounts.size();
             int totalPages = (int) Math.ceil(totalAccounts / (double) pageSize);
-
+            System.out.println("Tài hoản của bạn đã bị trùng ");
             // Lấy danh sách tài khoản trên trang hiện tại
             int start = (page - 1) * pageSize;
             int end = Math.min(start + pageSize, totalAccounts);
@@ -117,8 +117,13 @@ public class TaiKhoanController {
             accountPage.setAccounts(accountsOnPage);
             accountPage.setTotalPages(totalPages);
             accountPage.setCurrentPage(page);
+            m.addAttribute("error", "Tài khoản đã tồn tại");
             m.addAttribute("accountPage", accountPage);
-            return "Admin/qltk";
+            return ResponseEntity.badRequest().body("Tài khoản đã tồn tại !");
+        }
+        System.out.println("Username: " + username.length() + " \n password: " + password.length() );
+        if(username.trim().length() == 0 || password.trim().length() == 0 || radio.trim().length() == 0 ){
+            return ResponseEntity.badRequest().body("Vui lòng nhập đầy đủ thông tin !");
         }
         Account ac = new Account();
         ac.setTps_Username(username);
@@ -128,6 +133,9 @@ public class TaiKhoanController {
             ac.setTps_Active(true);
         }else{
             ac.setTps_Active(false);
+        }
+        if(file.isEmpty() == true){
+            return ResponseEntity.badRequest().body("Ảnh của bạn không được để trống !");
         }
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder", "photo"));
         String url = uploadResult.get("url").toString();
@@ -149,7 +157,9 @@ public class TaiKhoanController {
         accountPage.setCurrentPage(page);
         m.addAttribute("accountPage", accountPage);
         m.addAttribute("message","Thêm tài khoản thành công");
-        return "Admin/qltk";
+        return ResponseEntity.ok("Thêm tài khoản thành công !");
+
+
 
     }
 

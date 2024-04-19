@@ -45,7 +45,7 @@ public class dangKyController {
                           @RequestParam("tps_Gmail") String username,@RequestParam("fullname")String fullname) throws MessagingException {
         // kiem tra tai khoan đã sử dụng chưa
         Account acc = accountDAO.laytk(username);
-        if (    acc != null) {
+        if (  acc != null) {
             if (acc.getTps_Active()) {
                 // tai khoan da active
                 m.addAttribute("error", "Tên đăng nhập đã được sử dụng");

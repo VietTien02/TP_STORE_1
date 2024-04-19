@@ -24,8 +24,8 @@
     <div class="form-login-image">
       <a th:href="@{/}"> <img style="height: 60px; width: auto" src="/image/logo.jpg" alt="" /></a>
         </div>
-    <div  th:text="${error}" class="alert alert-danger" style="color: red"></div>
     <h1 style="text-align: center; padding: 10px">Đăng Ký</h1>
+    <div  th:text="${error}" class="alert alert-danger" style="color: red"></div>
     <div class="form-login-input">
       <input type="text" name="tps_Gmail" class="form-input" placeholder=" " />
       <label for="name" class="form-label">Email</label>
@@ -53,12 +53,10 @@
       <i class="fa-regular fa-eye-slash eye-close"></i>
       <span name="error-password2" style="color: red"></span>
     </div>
-
     <div class="form-login-input">
       <input  name="fullname"
              
               class="form-input input"
-
               placeholder=" "  required/>
       <label for="name" class="form-label">Nhập Họ Và Tên</label>
       
@@ -132,7 +130,7 @@
     }
 
     if (isEmpty) {
-      alert('Xin vui lòng điền đầy đủ thông tin vào các ô bắt buộc');
+
       return;
     }
 
@@ -173,7 +171,7 @@
     }
 
     if (isInvalid) {
-      alert('Thông tin không hợp lệ. Xin vui lòng kiểm tra lại !');
+
       return;
     }
 
