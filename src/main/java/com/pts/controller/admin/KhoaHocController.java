@@ -127,28 +127,41 @@ public class KhoaHocController {
         }
 
         @PostMapping("/save")
-        public String save(Model m,
+        public ResponseEntity<String> save(Model m,
                            @RequestParam("id")int id,
                            @RequestParam("name")String name,
-                           @RequestParam("discount")int discount,
-                           @RequestParam("price")int price,
+                           @RequestParam(value = "discount", defaultValue = "")String discountStr,
+                           @RequestParam(value = "price", defaultValue = "")String priceStr,
                            @RequestParam("information")String information,
                            @RequestParam("noidung")String noidung,
-                           @RequestParam("mulimage") MultipartFile file,
-                           @RequestParam("image")String image,
+                           @RequestParam("image") MultipartFile file,
                            @RequestParam("url")String url,
                            @RequestParam("radio")String radio,
-                           @RequestParam("category")int categoty) throws IOException {
-            System.out.println(categoty);
+                           @RequestParam("category")String categotyStr) throws IOException {
+            System.out.println(categotyStr);
+            if (name.trim().isEmpty() || information.trim().isEmpty() || noidung.trim().isEmpty() || radio.trim().isEmpty() || categotyStr.isEmpty()) {
+                return ResponseEntity.badRequest().body("Vui lòng nhập đầy đủ thông tin !");
+            }
 
+            long maxSize = 5 * 1024 * 1024; // 5 MB
+            if (file.getSize() > maxSize) {
+                return ResponseEntity.badRequest().body("Kích thước tệp tin không được vượt quá 5 MB!");
+            }
+            int discount = 0, price = 0, categoty = 0;
+            if(!discountStr.trim().isEmpty() ){
+                discount = Integer.parseInt(discountStr);
+            }
+            if(!priceStr.trim().isEmpty()){
+                price = Integer.parseInt(priceStr);
+            }if (!categotyStr.trim().isEmpty()){
+                categoty = Integer.parseInt(categotyStr);
+            }
             Course course =courseDAO.findById(id);
             Category category =categoryDAO.getById(categoty);
             String urlImgae = null;
             if (file != null && !file.isEmpty()) {
                 Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder", "photo"));
                 urlImgae = uploadResult.get("url").toString();
-            } else {
-                urlImgae = image;
             }
             String folderName = "noidung";
             Map uploadResult = cloudinary.uploader().upload(noidung.getBytes(), ObjectUtils.asMap(
@@ -173,7 +186,7 @@ public class KhoaHocController {
             course.setCategory(category);
             courseDAO.save(course);
 
-            return "redirect:/admin/khoa-hoc/edit?id="+id;
+            return ResponseEntity.ok("Sửa khóa học thành công !");
         }
 
         @PostMapping("/create")

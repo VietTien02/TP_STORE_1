@@ -27,16 +27,16 @@
       </button>
     </div>
     <div th:if="${course}">
-    <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <form id="editForm" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
     <div id="quanLy" class="w3-container city" >
       <div class="auto-scroll">
         <h1 style="text-align: center;">Quản Lý Khóa Học</h1>
         <div class="quanly_items" >
           <div class="quanly_items-l">
             <div class="quanly_item-l">
-              <img th:src="*{course.tps_image}" alt="" />
-              <input type="file" name="mulimage"id="fileInput2" accept="image/*">
-              <input type="hidden" name="image"  th:value="${course.tps_image}">
+              <img id="previewImage" th:src="*{course.tps_image}" alt="" />
+              <input type="file" id="fileInput2" name="image" th:value="${course.tps_image}" accept="image/*">
+
             </div>
           </div>
           <div class="quanly_items-r">
@@ -127,7 +127,7 @@
       </div>
     </div></form></div>
     <div th:unless="${course}">
-      <form method="post" enctype="multipart/form-data" >
+      <form id="createForm" method="post" enctype="multipart/form-data" >
         <div id="quanLy" class="w3-container city" >
           <div class="auto-scroll">
             <h1 style="text-align: center; margin-bottom: 10px;">Quản Lý Khóa Học</h1>
@@ -342,12 +342,40 @@
 
 
       // Sử dụng Ajax để gửi yêu cầu thêm tài khoản
-      $("form").submit(function(event) {
+      $("#createForm").submit(function(event) {
         event.preventDefault();
         var formData = new FormData(this);
 
         $.ajax({
           url: '/admin/khoa-hoc/create',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            if (response.startsWith("Error:")) {
+              var errorMessage = response.substring(7); // Bỏ qua phần "Error: "
+              alert(errorMessage);
+            } else {
+              showNotification(response); // Hiển thị thông báo thành công
+              // Tải lại trang để cập nhật dữ liệu mới
+            }
+          },
+          error: function(xhr, status, error) {
+            showErorMessage(xhr.responseText);
+          }
+        });
+      });
+    });
+    $(document).ready(function() {
+      // Hiển thị thông báo khi thêm tài khoản thành công
+      // Sử dụng Ajax để gửi yêu cầu thêm tài khoản
+      $("#editForm").submit(function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+          url: '/admin/khoa-hoc/save',
           type: 'POST',
           data: formData,
           processData: false,
