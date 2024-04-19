@@ -8,6 +8,8 @@ import com.pts.entity.AccountPage;
 import com.pts.entity.Category;
 import com.pts.entity.Course;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -175,24 +177,59 @@ public class KhoaHocController {
         }
 
         @PostMapping("/create")
-        public String create(@RequestParam("name")String name,
-                             @RequestParam("discount")int discount,
-                             @RequestParam("price")int price,
-                             @RequestParam("information")String information,
-                             @RequestParam("noidung")String noidung,
-                             @RequestParam("image") MultipartFile file,
+        public ResponseEntity<String> create(@RequestParam(value = "name", defaultValue = "")String name,
+                                     @RequestParam(value = "discount", defaultValue = "0")String discountStr,
+                                     @RequestParam(value = "price", defaultValue = "0")String priceStr,
+                                     @RequestParam(value = "information", defaultValue = "")String information,
+                                     @RequestParam(value = "noidung", defaultValue = "")String noidung,
+                                     @RequestParam(value = "image", defaultValue = "") MultipartFile file,
+                                     @RequestParam(value = "radio", defaultValue = "")String radio,
+                                     @RequestParam(value = "category")String category_id_str,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "") String keyword,
+                                     Model m) throws IOException {
+            Course checkCouseExists = courseDAO.findByName(name);
+            System.out.println("Hahaha chạy vào đây rồi !");
+            System.out.println("File: " + file.getContentType());
+            if(checkCouseExists != null){
+                return ResponseEntity.badRequest().body("Khóa học đã tồn tại: ");
+            }
+            System.out.println("Hahaha chạy vào đây rồi !");
+            //int d = category_id;
+            //System.out.println("Discount: " + discount.g);
+//            String discountString = Integer.toString(discount);
+//            String priceString = Integer.toString(price);
+//            String categotyString = Integer.toString(category_id);
+            System.out.println("Discount = " + discountStr + " \n Prince: " + priceStr);
 
-                             @RequestParam("radio")String radio,
-                             @RequestParam("category")int idcategory,
-                             @RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "") String keyword,
-                             Model m) throws IOException {
+            if (name.trim().isEmpty() || information.trim().isEmpty() || noidung.trim().isEmpty() || radio.trim().isEmpty() || category_id_str.isEmpty()) {
+                return ResponseEntity.badRequest().body("Vui lòng nhập đầy đủ thông tin !");
+            }
+            if (!file.getContentType().equals(MediaType.IMAGE_JPEG_VALUE) && !file.getContentType().equals(MediaType.IMAGE_PNG_VALUE) && !file.getContentType().equals(MediaType.IMAGE_GIF_VALUE)) {
+                return ResponseEntity.badRequest().body("Tệp tin phải là hình ảnh hoặc GIF!");
+            }
+            long maxSize = 5 * 1024 * 1024; // 5 MB
+            if (file.getSize() > maxSize) {
+                return ResponseEntity.badRequest().body("Kích thước tệp tin không được vượt quá 5 MB!");
+            }
+            int discount = 0, price = 0 , category_id = 0 ;
+            if (!discountStr.trim().isEmpty()  ){
+                discount = Integer.parseInt(discountStr);
+            }
+            if (!priceStr.trim().isEmpty()){
+                price = Integer.parseInt(priceStr);
+            }
+            if(!category_id_str.isEmpty()){
+                category_id = Integer.parseInt(category_id_str);
+            }
+            System.out.println("Discount = " + discount + " \n Prince: " + price);
 
+            if(file.isEmpty() == true){
+                return ResponseEntity.badRequest().body("Vui lòng chọn một file !");
+            }
             Course course =new Course();
             Category category =new Category();
-            category.setTps_Id(idcategory);
-
-
+            category.setTps_Id(category_id);
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder", "photo"));
             String urlImgae = uploadResult.get("url").toString();
             String folderName = "noidung";
@@ -242,7 +279,7 @@ public class KhoaHocController {
             accountPage.setTotalPages(totalPages);
             accountPage.setCurrentPage(page);
             m.addAttribute("accountPage", accountPage);
-            return "Admin/KhoaHoc";
+            return ResponseEntity.ok("Thêm tài khóa học thành công !");
         }
         @PostMapping("/reset")
         public String reset(Model m){

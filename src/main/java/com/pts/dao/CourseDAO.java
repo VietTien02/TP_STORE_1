@@ -19,7 +19,8 @@ public interface CourseDAO extends JpaRepository<Course,String> {
     List<Course> searchCourses(@Param("keyword") String keyword);
     @Query("SELECT p FROM Course p WHERE p.category.tps_Id=?1")
     List<Course>laydanhmuc(int id);
-
+    @Query("SELECT c from Course  c WHERE c.tps_Name = :name")
+    Course findByName(String name);
     @Query("SELECT p FROM Course p WHERE p.tps_id=?1")
     Course findByIdne(UserContent userContent);
 

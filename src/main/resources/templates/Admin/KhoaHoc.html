@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+  <style>
+    .red-star::after{
+      content: '*';
+      color: red;
+    }
+  </style>
 </head>
 <body>
 <div class="admin-qltk-right-bot" th:fragment="main">
@@ -122,90 +128,115 @@
     </div></form></div>
     <div th:unless="${course}">
       <form method="post" enctype="multipart/form-data" >
-    <div id="quanLy" class="w3-container city" >
-      <div class="auto-scroll">
-        <h1 style="text-align: center; margin-bottom: 10px;">Quản Lý Khóa Học</h1>
-        <div class="quanly_items">
-          <div class="quanly_items-l">
-            <div class="quanly_item-l">
-              <img src="/image/noimage.jpg" alt="" />
-              <input type="file" name="image" >
-            </div>
-          </div>
-          <div class="quanly_items-r">
-            <div class="quanly_item-r">
-              <label for="">Tên khóa học</label>
-              <input
-                      type="text"
-                      name="name"
-                      id=""
-                      placeholder="Nhập Tên khóa học ...." />
-            </div>
-            <div class="quanly_item-r">
-              <label for="">Giá Gốc</label>
-              <input
-                      type="text"
-                      name="discount"
-                      id=""
-                      placeholder="Nhập Giá Gốc ...." />
-            </div>
-            <div class="quanly_item-r">
-              <label for="">Giá Khuyến Mãi</label>
-              <input
-                      type="text"
-                      name="price"
-                      id=""
-                      placeholder="Nhập Giá Khuyến Mãi ...." />
-            </div>
-            <div class="quanly_item-r">
-              <label for="">Thông Tin Khóa Học</label>
-              <input
-                      type="text"
-                      name="information"
-                      id=""
-                      placeholder="Nhập Thông Tin Khóa Học ...." />
-            </div>
-            <div class="quanly_item-r">
-              <label for="">Nội Dung Khóa Học</label>
-              <textarea
-                      type="text"
-                      name="noidung"
-                      id=""
-                      placeholder="Nhập Nội Dung Khóa Học ...."></textarea>
-            </div>
-
-            <div class="quanly_items-r-radio">
-              <label for="">Kích Hoạt Khóa Học: </label>
-
-              <div class="quanly_item-r-radio">
-                <input type="radio" id="html" name="radio" value="true" checked />
-                <label for="html">Kích Hoạt</label>
+        <div id="quanLy" class="w3-container city" >
+          <div class="auto-scroll">
+            <h1 style="text-align: center; margin-bottom: 10px;">Quản Lý Khóa Học</h1>
+            <div class="quanly_items">
+              <div class="quanly_items-l">
+                <div class="quanly_item-l">
+                  <label for="">Ảnh: <span style="color: red;"><b>*</b></span></label>
+                  <img id="previewImage" src="/image/noimage.jpg"  alt="image" />
+                  <input id="fileInput2" type="file" name="image" >
+                </div>
               </div>
+              <div class="quanly_items-r">
+                <div class="quanly_item-r">
+                  <label for="">Tên khóa học: <span style="color: red">*</span></label>
+                  <input
+                          type="text"
+                          name="name"
+                          id=""
+                          placeholder="Nhập Tên khóa học ...." />
+                </div>
+                <div class="quanly_item-r">
+                  <label for="">Giá Gốc:</label>
+                  <input
+                          type="text"
+                          name="discount"
+                          id=""
+                          placeholder="Nhập Giá Gốc ...." />
+                </div>
+                <div class="quanly_item-r">
+                  <label for="">Giá Khuyến Mãi:</label>
+                  <input
+                          type="text"
+                          name="price"
+                          id=""
+                          placeholder="Nhập Giá Khuyến Mãi ...." />
+                </div>
+                <div class="quanly_item-r">
+                  <label for="">Thông Tin Khóa Học: <span style="color: red">*</span></label>
+                  <input
+                          type="text"
+                          name="information"
+                          id=""
+                          placeholder="Nhập Thông Tin Khóa Học ...." />
+                </div>
+                <div class="quanly_item-r">
+                  <label for="">Nội Dung Khóa Học: <span style="color: red">*</span></label>
+                  <textarea
+                          type="text"
+                          name="noidung"
+                          id=""
+                          placeholder="Nhập Nội Dung Khóa Học ...."></textarea>
+                </div>
+                <div class="quanly_items-r-radio">
+                  <label for="">Kích Hoạt Khóa Học: <span style="color: red">*</span></label>
 
-              <div class="quanly_item-r-radio">
-                <input type="radio" id="css" name="radio" value="false" />
-                <label for="css">Chưa Kích Hoạt</label>
+                  <div class="quanly_item-r-radio">
+                    <input type="radio" id="html" name="radio" value="true" checked />
+                    <label for="html">Kích Hoạt</label>
+                  </div>
+
+                  <div class="quanly_item-r-radio">
+                    <input type="radio" id="css" name="radio" value="false" />
+                    <label for="css">Chưa Kích Hoạt: </label>
+                  </div>
+                </div>
+                <div class="quanly_item-r">
+                  <div class="custom-select">
+                    <select name="category">
+
+                      <option value="" class="red-star" style="">--Chọn Danh Mục Khóa Học-- <span style="position: absolute; color: red; margin-left: 5px;">*</span></option>
+                      <th:block th:each="category : ${category}">
+                        <option th:value="${category.tps_Id}" name="category" th:text="${category.tps_Name}" th:selected="${category.tps_Id == selectedCategoryId}"></option>
+                      </th:block>
+                    </select>
+
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="quanly_item-r">
-              <div class="custom-select">
-                <select name="category">
-                  <option value="">--Chọn Danh Mục Khóa Học--</option>
-                  <th:block th:each="category : ${category}">
-                    <option th:value="${category.tps_Id}" name="category" th:text="${category.tps_Name}" th:selected="${category.tps_Id == selectedCategoryId}"></option>
-                  </th:block>
-                </select>
-
-              </div>
+            <div class="quanLy-btn bottom-height" style=" margin-bottom: 100px;">
+              <button type="submit"  >Thêm</button>
+              <a href="/admin/khoa-hoc"> <button type="button" >Đặt Lại</button></a>
             </div>
           </div>
         </div>
-        <div class="quanLy-btn bottom-height" style=" margin-bottom: 100px;">
-          <button formaction="/admin/khoa-hoc/create"  >Create</button>
-          <a href="/admin/khoa-hoc"> <button type="button" >Đặt Lại</button></a>
-        </div>
-      </div>
-    </div></form></div>
+      </form>
+    </div>
+    <div id="notification" class="notification" style="
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+        background-color: #159812;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;">
+      <span id="notificationMessage"></span>
+    </div>
+    <div id="erorrMessage" class="erorrMessage" style="
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+        background-color: #de7b00;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;">
+      <span id="erorrMessageId"></span>
+    </div>
     <div id="danhSach" class="w3-container city" style="display: none">
       <div class="admin-qltk-right-top-1">
 
@@ -259,41 +290,82 @@
     const noidungInput = document.querySelector('textarea[name="noidung"]');
     const categorySelect = document.querySelector('select[name="category"]');
 
-    form.addEventListener('submit', (event) => {
-      let errors = [];
+    document.getElementById('fileInput2').addEventListener('change', function(event) {
+      var file = event.target.files[0];
+      var reader = new FileReader();
 
-      if (nameInput.value.trim() === '') {
-        errors.push('Tên khóa học không được bỏ trống');
-      }
+      reader.onload = function(e) {
+        document.getElementById('previewImage').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    function validateFormMassage(message) {
+      var notificationMessage = document.getElementById("errorMessage1");
+      notificationMessage.innerText = message;
 
-      if (discountInput.value.trim() === '') {
-        errors.push('Giá gốc không được bỏ trống');
-      } else if (isNaN(discountInput.value) || Number(discountInput.value) < 0) {
-        errors.push('Giá gốc phải là số và không được âm');
-      }
+      var notification = document.getElementById("errorMessage2");
+      notification.style.display = "block";
 
-      if (priceInput.value.trim() === '') {
-        errors.push('Giá khuyến mãi không được bỏ trống');
-      } else if (isNaN(priceInput.value) || Number(priceInput.value) < 0) {
-        errors.push('Giá khuyến mãi phải là số và không được âm');
-      }
+      setTimeout(function() {
+        notification.style.display = "none";
+        window.location.reload();
+      }, 3000); // 3000 milliseconds = 3 seconds
+    }
 
-      if (informationInput.value.trim() === '') {
-        errors.push('Thông tin khóa học không được bỏ trống');
-      }
+    function showNotification(message) {
+      var notificationMessage = document.getElementById("notificationMessage");
+      notificationMessage.innerText = message;
 
-      if (noidungInput.value.trim() === '') {
-        errors.push('Nội dung khóa học không được bỏ trống');
-      }
+      var notification = document.getElementById("notification");
+      notification.style.display = "block";
 
-      if (categorySelect.value.trim() === '') {
-        errors.push('Bạn phải chọn danh mục khóa học');
-      }
+      setTimeout(function() {
+        notification.style.display = "none";
+        window.location.reload();
+      }, 3000); // 3000 milliseconds = 3 seconds
+    }
 
-      if (errors.length > 0) {
+    function showErorMessage(message) {
+      var notificationMessage = document.getElementById("erorrMessageId");
+      notificationMessage.innerText = message;
+
+      var notification = document.getElementById("erorrMessage");
+      notification.style.display = "block";
+
+      setTimeout(function() {
+        notification.style.display = "none";
+      }, 3000); // 3000 milliseconds = 3 seconds
+    }
+
+    $(document).ready(function() {
+      // Hiển thị thông báo khi thêm tài khoản thành công
+
+
+      // Sử dụng Ajax để gửi yêu cầu thêm tài khoản
+      $("form").submit(function(event) {
         event.preventDefault();
-        alert(errors.join('\n'));
-      }
+        var formData = new FormData(this);
+
+        $.ajax({
+          url: '/admin/khoa-hoc/create',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            if (response.startsWith("Error:")) {
+              var errorMessage = response.substring(7); // Bỏ qua phần "Error: "
+              alert(errorMessage);
+            } else {
+              showNotification(response); // Hiển thị thông báo thành công
+              // Tải lại trang để cập nhật dữ liệu mới
+            }
+          },
+          error: function(xhr, status, error) {
+            showErorMessage(xhr.responseText);
+          }
+        });
+      });
     });
   </script>
 

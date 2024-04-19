@@ -121,7 +121,7 @@ public class TaiKhoanController {
             m.addAttribute("accountPage", accountPage);
             return ResponseEntity.badRequest().body("Tài khoản đã tồn tại !");
         }
-        System.out.println("Username: " + username.length() + " \n password: " + password.length() );
+        //System.out.println("Username: " + username.length() + " \n password: " + password.length() );
         if(username.trim().length() == 0 || password.trim().length() == 0 || radio.trim().length() == 0 ){
             return ResponseEntity.badRequest().body("Vui lòng nhập đầy đủ thông tin !");
         }
