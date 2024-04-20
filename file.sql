@@ -1,7 +1,4 @@
-USE [master]
-GO
-/****** Object:  Database [KhoaHoc]    Script Date: 4/18/2023 2:57:01 PM ******/
-CREATE DATABASE [KhoaHoc]
+
  CONTAINMENT = NONE
  ON  PRIMARY 
 ( NAME = N'KhoaHoc', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\KhoaHoc.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
