@@ -1,0 +1,21 @@
+
+Kiểm tra (test case) – IPN URL:
+Kịch bản test (SIT): https://sandbox.vnpayment.vn/vnpaygw-sit-testing/user/login
+
+Tên đăng nhập: viettien.bang@gmail.com
+
+Mật khẩu: (Là mật khẩu nhập tại giao diện đăng ký Merchant môi trường TEST)
+
+Tài liệu:
+Tài liệu hướng dẫn tích hợp: https://sandbox.vnpayment.vn/apis/docs/gioi-thieu/
+
+Code demo tích hợp: https://sandbox.vnpayment.vn/apis/vnpay-demo/code-demo-tích-hợp
+
+Thẻ test:
+Ngân hàng	NCB
+Số thẻ	9704198526191432198
+Tên chủ thẻ	NGUYEN VAN A
+Ngày phát hành	07/15
+Mật khẩu OTP	123456
+
+Ngoài ra anh/chị có thể dùng thử demo Cổng thanh toán VNPAY tại: https://sandbox.vnpayment.vn/apis/vnpay-demo/để có những trải nghiệm đầu tiên khi tích hợp với Cổng thanh toán VNPAYQR.
