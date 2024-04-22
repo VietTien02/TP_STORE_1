@@ -37,7 +37,7 @@ public class QuenMKController {
 
                 acc.generateResetToken();
                 accountDAO.save(acc);
-                String token=acc.getResetToken();
+                String token = acc.getResetToken();
                 String activationUrl = "http://localhost:80/quenmk?token=" +token;
 
                 mailer.send( acc.getTps_Username(),"Quên mật khẩu","Xin Chào  Chúng tôi đã nhận được yêu cầu Quên Mật Khẩu vào F5 bằng địa chỉ email này. Nếu bạn muốn Thay Đổi Mật Khẩu bằng tài khoản "+acc.getTps_Username()+" của mình, hãy  click vào liên kết:"+"<a href='" + activationUrl + "'>tại đây</a>");

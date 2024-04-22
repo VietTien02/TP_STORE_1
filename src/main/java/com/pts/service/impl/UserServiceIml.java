@@ -14,10 +14,10 @@ public class UserServiceIml {
     AccountDAO accountDAO;
 
     public Account save(Account user) {
-//         Mã hóa mật khẩu trước khi lưu vào database
-//        user.setTps_Password(hashPassword(user.getTps_Password()));
-//        String encodedPassword = bCryptPasswordEncoder.encode(user.getTps_Password());
-//        user.setTps_Password(encodedPassword);
+        // Mã hóa mật khẩu trước khi lưu vào database
+        user.setTps_Password(hashPassword(user.getTps_Password()));
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getTps_Password());
+        user.setTps_Password(encodedPassword);
         return accountDAO.save(user);
     }
 

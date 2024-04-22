@@ -29,9 +29,7 @@ public class VideoController {
         uploadParams.put("chunk_size", 100000000); // Kích thước chunk tối đa
         uploadParams.put("timeout", 120000); // Thời gian tối đa để tải lên
 
-//        uploadParams.put("use_filename", true); // Sử dụng tên tệp tin ban đầu
-//        uploadParams.put("unique_filename", false); // Không tạo tên tệp tin duy nhất
-//        uploadParams.put("overwrite", true); // Ghi đè lên tệp tin đã có nếu có
+     uploadParams.put("overwrite", true); // Ghi đè lên tệp tin đã có nếu có
 
         Map<String, Object> result = cloudinary.uploader().upload(file.getBytes(), uploadParams);
 

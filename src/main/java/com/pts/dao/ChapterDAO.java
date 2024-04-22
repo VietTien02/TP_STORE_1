@@ -22,6 +22,9 @@ public interface ChapterDAO extends JpaRepository<Chapter,String> {
     @Query("SELECT c FROM Chapter c WHERE c.course.tps_Name LIKE CONCAT('%', :keyword, '%')")
     List<Chapter> timkiemKhoaHoc(@Param("keyword") String keyword);
 
+    @Query("SELECT c FROM Chapter c WHERE c.tps_title = ?1 AND c.course.tps_id = ?2")
+    Chapter timKiemChuongTheoNoiDungVaTheoId(String name, int courseId);
+
 
 
 

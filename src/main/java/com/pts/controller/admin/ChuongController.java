@@ -7,6 +7,7 @@ import com.pts.entity.Chapter;
 import com.pts.entity.Course;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class ChuongController {
 
         List<Chapter> chapterList;
 
-        if (keyword.equals("")) {
+        if (keyword.equals("") || keyword.isEmpty()) {
             chapterList = chapterDAO.findAll();
         } else {
             if (radio.equals("chuong")) {
@@ -98,24 +99,31 @@ public class ChuongController {
         }
 
         @PostMapping("/save")
-        public String save(Model m, @RequestParam("id")int id, RedirectAttributes redirectAttributes,
+        public ResponseEntity<String> save(Model m, @RequestParam("id")int id, RedirectAttributes redirectAttributes,
                            @RequestParam("title")String title,
                            @RequestParam("course_name")String course_name){
         Chapter chapter= chapterDAO.find(id);
         chapter.setTps_title(title);
         chapterDAO.save(chapter);
-        return "redirect:/admin/chuong/edit?id="+id;
+        return ResponseEntity.ok(" Chỉnh sửa chapter thành công ! ");
         }
 
         @PostMapping("/create")
-        public String create(Model m,@RequestParam("name")String name,@RequestParam("id")int id){
-        Chapter chapter = new Chapter();
+        public ResponseEntity<String> create(Model m, @RequestParam("name")String name, @RequestParam("id")int id){
         Course course=courseDAO.findById(id);
+
+        Chapter findChapter = chapterDAO.timKiemChuongTheoNoiDungVaTheoId(name,id);
+        if (name.isEmpty() || name == null ){
+            return ResponseEntity.badRequest().body("Vui lòng nhap day du thong tin");
+        }
+        if (findChapter != null ){
+            return ResponseEntity.badRequest().body("Chương đã tồn tại trong khóa học của bạn !");
+        }
+        Chapter chapter = new Chapter();
         chapter.setTps_title(name);
         chapter.setCourse(course);
         chapterDAO.save(chapter);
-
-        return "redirect:/admin/chuong";
+        return ResponseEntity.ok("Thêm chapter mới thành công !");
         }
 
         
