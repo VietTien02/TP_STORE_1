@@ -4,6 +4,7 @@ import com.pts.dao.PaymentRepository;
 import com.pts.entity.AccountPage;
 import com.pts.entity.Payment;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -96,8 +97,52 @@ public class PayMentController {
         headerCellStyle.setBorderLeft(BorderStyle.THIN);
         headerCellStyle.setBorderRight(BorderStyle.THIN);
 
+        // Tạo một Font mới và đặt font chữ là Times New Roman và kích thước là 20
+        Font font = workbook.createFont();
+        font.setFontName("Times New Roman");
+        font.setFontHeightInPoints((short) 20);
+
+// Tạo CellStyle mới để định dạng ô gộp
+        CellStyle mergedCellStyle = workbook.createCellStyle();
+        mergedCellStyle.setAlignment(HorizontalAlignment.CENTER); // căn giữa
+
+// Đặt font cho CellStyle
+        mergedCellStyle.setFont(font);
+
+// Tạo dòng mới để chứa ô gộp
+        Row headerHistory = sheet.createRow(0);
+
+// Gộp các ô thành một
+        sheet.addMergedRegion(new CellRangeAddress(
+                0, // Từ hàng 0
+                0, // Đến hàng 0 (chỉ một dòng)
+                0, // Từ cột 0
+                6  // Đến cột 6
+        ));
+
+// Tạo ô mới trong dòng và thiết lập nội dung "Lịch sử thanh toán"
+        Cell mergedCell = headerHistory.createCell(0); // Tạo ô mới
+        mergedCell.setCellValue("Lịch sử thanh toán");
+
+// Thiết lập CellStyle cho ô gộp
+        mergedCell.setCellStyle(mergedCellStyle);
+        Row rowTime = sheet.createRow(2);
+        CellStyle mergedCellStyleTime = workbook.createCellStyle();
+        mergedCellStyleTime.setAlignment(HorizontalAlignment.CENTER);
+// Gộp các ô trong dòng thứ 3
+        sheet.addMergedRegion(new CellRangeAddress(
+                2, // Từ hàng 2
+                2, // Đến hàng 2 (chỉ một dòng)
+                0, // Từ cột 0
+                6  // Đến cột 6
+        ));
+
+// Tạo ô mới trong dòng và thiết lập nội dung là thời gian hiện tại
+        Cell mergedCellRow3 = rowTime.createCell(0); // Tạo ô mới
+        mergedCellRow3.setCellValue("Ngày tao: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+        mergedCellRow3.setCellStyle(mergedCellStyleTime);
 // Tạo và thiết lập header cells
-        XSSFRow header = sheet.createRow(0);
+        XSSFRow header = sheet.createRow(4);
         header.createCell(0).setCellValue("STT");
         header.createCell(1).setCellValue("Ngân Hàng");
         header.createCell(2).setCellValue("Số Tiền");
@@ -118,8 +163,8 @@ public class PayMentController {
         sheet.setColumnWidth(0, 1500);
         sheet.setColumnWidth(1, 4000);
         sheet.setColumnWidth(2, 4000);
-        sheet.setColumnWidth(3, 1000);
-        sheet.setColumnWidth(4, 10000);
+        sheet.setColumnWidth(3, 10000);
+        sheet.setColumnWidth(4, 7000);
         sheet.setColumnWidth(5, 6000);
         sheet.setColumnWidth(6, 6000);
 
@@ -140,7 +185,7 @@ public class PayMentController {
         cellStyle.setBorderRight(BorderStyle.THIN);
 
 // Lặp qua danh sách tài khoản và tạo các row tương ứng
-        int rowNum = 1;
+        int rowNum = 5;
         AtomicInteger index = new AtomicInteger(1);
         for (Payment payment : paymentList) {
             Row row = sheet.createRow(rowNum++);
