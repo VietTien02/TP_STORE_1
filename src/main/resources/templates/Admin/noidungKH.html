@@ -14,8 +14,12 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
@@ -37,17 +41,19 @@
             </button>
         </div>
         <div th:if="${content}">
-            <form  method="post" enctype="multipart/form-data">
+            <form id="editForm" method="post" enctype="multipart/form-data">
                 <div id="quanLy" class="w3-container city">
                     <div class="auto-scroll">
                         <h1 style="text-align: center; ">Quản Lý Nội Dung Khóa Học</h1>
                         <div class="quanly_items">
                             <div class="quanly_items-l">
                                 <div class="quanly_item-l">
-                                    <video width="300" height="170" controls controlsList="nodownload" id="myVideo" currentTime>
-                                        <source th:src="@{|${content.tps_linkytb}|}" type="video/mp4" srcset="video_high_quality.mp4 1080w">
+                                    <video  width="300" height="170" controls controlsList="nodownload" id="myVideo"
+                                           currentTime>
+                                        <source id="previewImage" th:src="@{|${content.tps_linkytb}|}" type="video/mp4"
+                                                srcset="video_high_quality.mp4 1080w">
                                     </video>
-                                    <input type="file" name="mulimage">
+                                    <input type="file" id="fileInput2" name="mulimage">
                                     <input type="hidden" name="id" th:value="${content.tps_id}">
                                     <input type="hidden" name="image" th:value="${content.tps_linkytb}">
                                 </div>
@@ -56,10 +62,10 @@
                                 <div class="quanly_item-r">
                                     <label for="">Tên Bài Học</label>
                                     <input th:value="${content.tps_title}"
-                                            type="text"
-                                            name="name"
-                                            id=""
-                                            placeholder="Nhập Tên Bài Học ...." />
+                                           type="text"
+                                           name="name"
+                                           id=""
+                                           placeholder="Nhập Tên Bài Học ...."/>
                                 </div>
                                 <div class="quanly_item-r">
                                     <div class="quanly_item-r">
@@ -67,13 +73,13 @@
                                         <input th:value="${content.chapter.tps_title}"
                                                type="text"
                                                id=""
-                                               placeholder="Nhập Tên Bài Học ...." readonly />
+                                               placeholder="Nhập Tên Bài Học ...." readonly/>
 
                                         <input th:value="${content.chapter.tps_id}"
                                                type="hidden"
                                                name="chapter"
                                                id=""
-                                               placeholder="Nhập Tên Bài Học ...." />
+                                               placeholder="Nhập Tên Bài Học ...."/>
                                     </div>
                                 </div>
 
@@ -81,71 +87,107 @@
                         </div>
                         <div class="quanLy-btn bottom-height" style="margin-top: 50px; margin-bottom: 100px;">
                             <button formaction="/admin/noi-dung/save">Chỉnh Sửa</button>
-                            <a th:href="@{|/admin/noi-dung/edit?id=${content.tps_id}|}"><button type="button">Đặt Lại</button></a>
-                            <a th:href="@{|/admin/noi-dung/|}"><button type="button">Thêm Mới</button></a>
+                            <a th:href="@{|/admin/noi-dung/edit?id=${content.tps_id}|}">
+                                <button type="button">Đặt Lại</button>
+                            </a>
+                            <a th:href="@{|/admin/noi-dung/|}">
+                                <button type="button">Thêm Mới</button>
+                            </a>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div th:unless="${content}" >
-            <form   method="post" enctype="multipart/form-data" >
+        <div  th:unless="${content}">
+            <form id="createForm" method="post" enctype="multipart/form-data">
                 <div id="quanLy" class="w3-container city">
                     <div class="auto-scroll">
                         <h1 style="text-align: center; margin-bottom: 30px;">Quản Lý Nội Dung Khóa Học</h1>
                         <div class="quanly_items">
                             <div class="quanly_items-l">
                                 <div class="quanly_item-l">
-                                    <img src="/image/iconuploadvideo.jpg" alt="" />
-                                    <input type="file"   accept="video/*" name="mulimage" >
+                                    <video id="previewVideo" controls>
+                                        <source id="videoSource" src="/image/iconuploadvideo.jpg" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <input type="file" id="fileInput2" accept="video/*" name="mulimage">
                                 </div>
                             </div>
                             <div class="quanly_items-r">
                                 <div class="quanly_item-r">
                                     <label for="">Tên Bài Học</label>
                                     <input th:value="${name}"
-                                            type="text"
-                                            name="tenbaihoc"
-                                            id="tenbaihoc"
-                                            placeholder="Nhập Tên Bài Học ...."  required/>
+                                           type="text"
+                                           name="tenbaihoc"
+                                           id="tenbaihoc"
+                                           placeholder="Nhập Tên Bài Học ...." required/>
                                 </div>
                                 <div class="quanly_item-r">
                                     <div class="custom-select">
-                                        <select id="courseselect" name="course" >
+                                        <select id="courseselect" name="course">
                                             <option value="">--Chọn Khóa Học--</option>
                                             <option th:each="course : ${courses}" th:value="${course.tps_id}"
-                                                    th:text="${course.tps_Name}" th:selected="${thongtin != null && thongtin.tps_id == course.tps_id}">
+                                                    th:text="${course.tps_Name}"
+                                                    th:selected="${thongtin != null && thongtin.tps_id == course.tps_id}">
                                             </option>
                                         </select>
                                     </div>
-                                    <button style="padding: 10px; margin-top: 15px; background: #ffffff; border:none; outline: none" type="button" onclick="goToCourse()">Chọn Khóa Học</button>
+                                    <button style="padding: 10px; margin-top: 15px; background: #ffffff; border:none; outline: none"
+                                            type="button" onclick="goToCourse()">Chọn Khóa Học
+                                    </button>
                                 </div>
-
                                 <div class="quanly_item-r">
-                                    <div class="custom-select" >
-                                        <select   id="chapterSelect" name="chapter" required>
+                                    <div class="custom-select">
+                                        <select id="chapterSelect" name="chapter" required>
                                             <option value="">--Chọn Chương--</option>
-                                            <option   th:each="p:${chapter}" th:value="${p.tps_id}" th:text="${p.tps_title}" ></option>
-
+                                            <option th:each="p:${chapter}" th:value="${p.tps_id}"
+                                                    th:text="${p.tps_title}"></option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="quanLy-btn bottom-height" style="margin-top: 50px; margin-bottom: 100px;">
-                            <button  formaction="/admin/noi-dung/create">THÊM</button>
+                            <button formaction="/admin/noi-dung/create">THÊM</button>
 
-                            <a th:href="@{|/admin/noi-dung/|}"><button type="button">Đặt Lại</button></a>
+                            <a th:href="@{|/admin/noi-dung/|}">
+                                <button type="button">Đặt Lại</button>
+                            </a>
                         </div>
                     </div>
-                </div></form></div>
+                </div>
+            </form>
+        </div>
+        <div id="notification" class="notification" style="
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+        background-color: #159812;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;">
+            <span id="notificationMessage"></span>
+        </div>
+        <div id="erorrMessage" class="erorrMessage" style="
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+        background-color: #de7b00;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;">
+            <span id="erorrMessageId"></span>
+        </div>
         <div class="loader"></div>
         <div id="danhSach" class="w3-container city" style="display: none">
             <h1 style="text-align: center;">Nội Dung Khóa Học</h1>
             <div class="admin-qltk-right-top">
                 <div class="admin-qltk-right-top-1">
                     <input type="text" id="searchInput" placeholder="Tìm kiếm..." oninput="search()">
-                    <select style="margin-left: 20px; padding: 9px; border: none; outline: none;" id="searchOption" onchange="search()">
+                    <select style="margin-left: 20px; padding: 9px; border: none; outline: none;" id="searchOption"
+                            onchange="search()">
                         <option value="tps_title">Theo Nội Dung</option>
                         <option value="KH">Theo Khóa Học</option>
                         <option value="C">Theo Chương</option>
@@ -164,19 +206,23 @@
                     <td th:text="${p.chapter.course.tps_Name}"></td>
                     <td th:text="${p.chapter.tps_title}"></td>
                     <td>
-<!--                        <ion-icon name="trash-outline"></ion-icon>-->
-                       <a th:href="@{|/admin/noi-dung/edit?id=${p.tps_id}|}"> <ion-icon class="create_icon"  name="create-outline"></ion-icon></a>
+                        <!--                        <ion-icon name="trash-outline"></ion-icon>-->
+                        <a th:href="@{|/admin/noi-dung/edit?id=${p.tps_id}|}">
+                            <ion-icon class="create_icon" name="create-outline"></ion-icon>
+                        </a>
                     </td>
                 </tr>
             </table>
             <div class="pagination" style="padding: 40px 300px">
                 <a href="#" th:if="${accountPage.currentPage > 1}" th:onclick="'javascript:loadPage(1, event)'">«</a>
                 <span th:each="page : ${#numbers.sequence(1, accountPage.totalPages)}">
-        <a href="#" th:class="${page == accountPage.currentPage} ? active" th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
+        <a href="#" th:class="${page == accountPage.currentPage} ? active"
+           th:onclick="'javascript:loadPage(' + ${page} + ', event)'">
             <span th:text="${page}"></span>
         </a>
     </span>
-                <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}" th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
+                <a href="#" th:if="${accountPage.currentPage < accountPage.totalPages}"
+                   th:onclick="'javascript:loadPage(' + ${accountPage.totalPages} + ', event)'">»</a>
             </div>
         </div>
     </div>
@@ -229,17 +275,20 @@
             // Submit the form
             form.submit();
         });
+
+        // ajax
+
     </script>
 
     <script>
         function goToCourse() {
             // Lấy giá trị id của khóa học được chọn
             var courseId = document.getElementById("courseselect").value;
- 			var tenbaihocInput = document.getElementById("tenbaihoc");
-			var tenbaihocValue = tenbaihocInput.value;
+            var tenbaihocInput = document.getElementById("tenbaihoc");
+            var tenbaihocValue = tenbaihocInput.value;
             // Nếu giá trị id tồn tại, chuyển hướng đến trang mới
             if (courseId) {
-                var newUrl = "/admin/noi-dung?courseId=" + courseId +"&name="+tenbaihocValue;
+                var newUrl = "/admin/noi-dung?courseId=" + courseId + "&name=" + tenbaihocValue;
                 window.location.href = newUrl;
             }
         }
@@ -260,19 +309,136 @@
                     keyword: search,
                     option: option
                 },
-                success: function(response) {
+                success: function (response) {
                     // Cập nhật nội dung danh sách tài khoản
                     var table = $(response).find("#customers").html();
                     $("#customers").html(table);
                     var pagination = $(response).find(".pagination").html();
                     $(".pagination").html(pagination);
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.log("Error: " + error);
                 }
             });
         }
+        document.getElementById('fileInput2').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
 
+            reader.onload = function (e) {
+                document.getElementById('previewImage').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        function loadVideo(event) {
+            var video = document.getElementById('previewVideo');
+            var videoSource = document.getElementById('videoSource');
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                videoSource.src = e.target.result;
+                video.load();
+            };
+
+            reader.readAsDataURL(file);
+        }
+        function validateFormMassage(message) {
+            var notificationMessage = document.getElementById("errorMessage1");
+            notificationMessage.innerText = message;
+
+            var notification = document.getElementById("errorMessage2");
+            notification.style.display = "block";
+
+            setTimeout(function () {
+                notification.style.display = "none";
+                window.location.reload();
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
+
+        function showNotification(message) {
+            var notificationMessage = document.getElementById("notificationMessage");
+            notificationMessage.innerText = message;
+
+            var notification = document.getElementById("notification");
+            notification.style.display = "block";
+
+            setTimeout(function () {
+                notification.style.display = "none";
+                window.location.reload();
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
+
+        function showErorMessage(message) {
+            var notificationMessage = document.getElementById("erorrMessageId");
+            notificationMessage.innerText = message;
+
+            var notification = document.getElementById("erorrMessage");
+            notification.style.display = "block";
+
+            setTimeout(function () {
+                notification.style.display = "none";
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
+
+        $(document).ready(function () {
+            // Hiển thị thông báo khi thêm tài khoản thành công
+
+
+            // Sử dụng Ajax để gửi yêu cầu thêm tài khoản
+            $("#createForm").submit(function (event) {
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '/admin/noi-dung/create',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.startsWith("Error:")) {
+                            var errorMessage = response.substring(7); // Bỏ qua phần "Error: "
+                            alert(errorMessage);
+                        } else {
+                            showNotification(response); // Hiển thị thông báo thành công
+                            // Tải lại trang để cập nhật dữ liệu mới
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        showErorMessage(xhr.responseText);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            // Hiển thị thông báo khi thêm tài khoản thành công
+            // Sử dụng Ajax để gửi yêu cầu thêm tài khoản
+            $("#editForm").submit(function (event) {
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '/admin/noi-dung/save',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.startsWith("Error:")) {
+                            var errorMessage = response.substring(7); // Bỏ qua phần "Error: "
+                            alert(errorMessage);
+                        } else {
+                            showNotification(response); // Hiển thị thông báo thành công
+                            // Tải lại trang để cập nhật dữ liệu mới
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        showErorMessage(xhr.responseText);
+                    }
+                });
+            });
+        });
     </script>
     <script>
         function search() {
@@ -289,7 +455,7 @@
                     keyword: search,
                     option: option
                 },
-                success: function(response) {
+                success: function (response) {
                     var table = $(response).find("#customers").html();
                     $("#customers").html(table);
 
@@ -299,13 +465,12 @@
                     console.log('hi');
 
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log(error);
                 }
             });
         }
     </script>
-
 
 
 </div>

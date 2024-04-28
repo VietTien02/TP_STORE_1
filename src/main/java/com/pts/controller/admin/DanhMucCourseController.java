@@ -6,6 +6,8 @@ import com.pts.dao.CategoryDAO;
 import com.pts.entity.AccountPage;
 import com.pts.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +91,7 @@ public class DanhMucCourseController {
     }
 
     @PostMapping("/save")
-    public String save(Model m,@RequestParam("name")String name,
+    public ResponseEntity<String> save(Model m,@RequestParam("name")String name,
                        @RequestParam(value = "mulimage", required = false) MultipartFile file,
                        @RequestParam("id")int id,@RequestParam("image")String image) throws IOException {
 
@@ -106,13 +108,23 @@ public class DanhMucCourseController {
         category.setTps_Image(url);
         categoryDAO.save(category);
 
-        return "redirect:/admin/danh-muc/edit?id="+id;
+        return ResponseEntity.ok("Sửa nội dung khóa học thành công !");
 
     }
     @PostMapping("/create")
-    public String create(Model m,@RequestParam("name")String name,
-                         @RequestParam(value = "mulimage", required = false) MultipartFile file
+    public ResponseEntity<String> create(Model m, @RequestParam("name")String name,
+                                 @RequestParam(value = "mulimage", required = false) MultipartFile file
                         ) throws IOException {
+        if (name.trim().isEmpty() || name == null ){
+            return ResponseEntity.badRequest().body("Thông tin không được để trống");
+        }
+        if (!file.getContentType().equals(MediaType.IMAGE_JPEG_VALUE) && !file.getContentType().equals(MediaType.IMAGE_PNG_VALUE) && !file.getContentType().equals(MediaType.IMAGE_GIF_VALUE)) {
+            return ResponseEntity.badRequest().body("Tệp tin phải là hình ảnh hoặc GIF!");
+        }
+        long maxSize = 5 * 1024 * 1024; // 5 MB
+        if (file.getSize() > maxSize) {
+            return ResponseEntity.badRequest().body("Kích thước tệp tin không được vượt quá 5 MB!");
+        }
         Category category=new Category();
         category.setTps_Name(name);
 
@@ -120,7 +132,7 @@ public class DanhMucCourseController {
         String url = uploadResult.get("url").toString();
         category.setTps_Image(url);
         categoryDAO.save(category);
-        return "redirect:/admin/danh-muc";
+        return ResponseEntity.ok(" Thêm danh mục thành công !");
     }
 
         @RequestMapping("/reset")

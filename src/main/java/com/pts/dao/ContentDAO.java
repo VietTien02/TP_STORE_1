@@ -29,6 +29,8 @@ public interface ContentDAO extends JpaRepository<Content,Integer> {
 
     @Query("SELECT p FROM Content p WHERE p.chapter.tps_id =?1")
     List<Content>timchapter(int id);
+    @Query("SELECT c FROM Content  c WHERE c.tps_title = ?1 AND c.chapter.tps_id = ?2 ")
+    Content timTenNoiDungKhoaHocTheoChuong(String name, int chapter_id);
 
 
 
