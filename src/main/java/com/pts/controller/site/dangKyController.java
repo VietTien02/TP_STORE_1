@@ -6,6 +6,7 @@ import com.pts.service.impl.MailerServiceImpl;
 import com.pts.service.impl.UserServiceIml;
 import com.pts.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +32,8 @@ public class dangKyController {
     MailerServiceImpl mailer;
     @Autowired
     UserServiceIml userServiceIml;
-//    @Autowired
-//    BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @RequestMapping("auth/signup")
     public String signup(Model m, Account account){
@@ -67,7 +68,7 @@ public class dangKyController {
         acc = new Account();
         acc.setTps_Fullname(fullname);
         acc.setTps_Username(username);
-//        acc.setTps_Password(passwordEncoder.encode(password));
+        acc.setTps_Password(passwordEncoder.encode(password));
         acc.setTps_Password(password);
         acc.setTps_Active(false);
         acc.setTps_Date(new Date());

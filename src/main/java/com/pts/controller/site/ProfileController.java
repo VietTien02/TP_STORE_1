@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 @Controller
@@ -59,9 +61,9 @@ public class ProfileController {
             ,HttpServletRequest request)throws IOException{
         String username=request.getRemoteUser();
         Account acc =accountDAO.laytk(username);
-//    	String uniqueFileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
-//		File filePath = new File("src/main/webapp/image");
-//		file.transferTo(new File(filePath.getAbsolutePath() + "/" + uniqueFileName));
+    	String uniqueFileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
+		File filePath = new File("src/main/webapp/image");
+		file.transferTo(new File(filePath.getAbsolutePath() + "/" + uniqueFileName));
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder", "photo"));
         String url = uploadResult.get("url").toString();
 
