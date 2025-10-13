@@ -6,7 +6,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang Chủ</title>
+    <style>
+        .rounded-img {
+            width: 200px;       /* tùy chỉnh kích thước */
+            height: 200px;      /* nên đặt vuông để tròn hoàn hảo */
+            border-radius: 50%; /* làm tròn ảnh */
+            object-fit: cover;  /* cắt vừa khung hình */
+        }
+    </style>
 </head>
+
 <body>
 
 <!--<div class="banner">-->
@@ -14,8 +23,90 @@
 <!--</div>-->
     <div th:fragment="main">
         <div class="banner">
-            <img src="image/LTV-T3H.jpg" alt="" />
+            <img th:src="@{/image/LTV-T3H.jpg}" alt="Ảnh" />
+            <img th:src="@{/image/banner-copy.jpg}" alt="Ảnh" />
+            <img th:src="@{/image/Reactjs.jpg}" alt="Ảnh" />
+
+            <!-- Mũi tên -->
+            <span class="prev">&#10094;</span>
+            <span class="next">&#10095;</span>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const slides = document.querySelectorAll('.banner img');
+                let current = 0;
+                const duration = 1000; // 1s cho transform + opacity
+
+                // Hiển thị slide đầu tiên
+                slides.forEach((slide, index) => {
+                    slide.style.position = 'absolute';
+                    slide.style.top = 0;
+                    slide.style.left = 0;
+                    slide.style.width = '100%';
+                    slide.style.height = '100%';
+                    slide.style.objectFit = 'cover';
+                    slide.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+                    slide.style.transform = index === 0 ? 'translateX(0)' : 'translateX(100%)';
+                    slide.style.opacity = index === 0 ? 1 : 0;
+                });
+
+                const nextBtn = document.querySelector('.next');
+                const prevBtn = document.querySelector('.prev');
+
+                function slideTo(nextIndex, direction) {
+                    if (nextIndex === current) return;
+
+                    const currentSlide = slides[current];
+                    const nextSlide = slides[nextIndex];
+
+                    // Chuẩn bị slide mới
+                    nextSlide.style.transition = 'none';
+                    nextSlide.style.transform = direction === 'next' ? 'translateX(100%)' : 'translateX(-100%)';
+                    nextSlide.style.opacity = 0;
+                    nextSlide.offsetHeight; // force reflow
+
+                    // bật transition
+                    currentSlide.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+                    nextSlide.style.transition = `transform ${duration}ms ease, opacity ${duration}ms ease`;
+
+                    // Di chuyển slide
+                    currentSlide.style.transform = direction === 'next' ? 'translateX(-100%)' : 'translateX(100%)';
+                    currentSlide.style.opacity = 0;
+
+                    nextSlide.style.transform = 'translateX(0)';
+                    nextSlide.style.opacity = 1;
+
+                    current = nextIndex;
+                }
+
+                nextBtn.addEventListener('click', () => {
+                    slideTo((current + 1) % slides.length, 'next');
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    slideTo((current - 1 + slides.length) % slides.length, 'prev');
+                });
+
+                // Auto slide
+                let autoSlideTime = 5000; // 5s
+                let autoSlide = setInterval(() => {
+                    slideTo((current + 1) % slides.length, 'next');
+                }, autoSlideTime);
+
+                // Pause khi hover
+                const banner = document.querySelector('.banner');
+                banner.addEventListener('mouseenter', () => clearInterval(autoSlide));
+                banner.addEventListener('mouseleave', () => {
+                    autoSlide = setInterval(() => {
+                        slideTo((current + 1) % slides.length, 'next');
+                    }, autoSlideTime);
+                });
+            });
+        </script>
+
+
+
         <section class="section_index-1">
             <div class="section_content">
                 <h1>Khóa Học Miễn Phí</h1>
@@ -109,6 +200,6 @@
             </div>
         </section>
     </div>
-
 </body>
+
 </html>

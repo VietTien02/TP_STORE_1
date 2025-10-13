@@ -35,7 +35,7 @@ public class ChuongController {
 
         List<Chapter> chapterList;
 
-        if (keyword.equals("") || keyword.isEmpty()) {
+        if (keyword.isEmpty()) {
             chapterList = chapterDAO.findAll();
         } else {
             if (radio.equals("chuong")) {

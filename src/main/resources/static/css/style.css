@@ -203,11 +203,65 @@ header .search {
     display: none;
     left: 0;
 }
-.banner img {
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-top: 5%;
+.banner {
+    width: 90%;
+    margin: 100px auto 20px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    position: relative;
+    height: 400px;
 }
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.banner img.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.banner .prev,
+.banner .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #bfcdd8;
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 50%;
+    transition: transform 0.3s ease, color 0.3s ease, opacity 0.2s ease;
+}
+
+/* Hover: đổi màu và phóng to */
+.banner .prev:hover,
+.banner .next:hover {
+    color: #5a7a4d; /* xanh đậm hơn */
+    transform: translateY(-50%) scale(1.2);
+}
+
+/* Click: phóng to nhẹ, giảm opacity */
+.banner .prev:active,
+.banner .next:active {
+    transform: translateY(-50%) scale(1.1);
+    opacity: 0.8;
+}
+
+.banner .prev { left: 5px; }
+.banner .next { right: 5px; }
+
 /* CSS PRODUCT */
 .section_index-2 {
     padding: 30px 140px 0px;

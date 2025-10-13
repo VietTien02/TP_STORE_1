@@ -171,6 +171,15 @@
         width: 100%;
         display: block;
     }
+    .accordion .accordion-content {
+        display: none;
+        padding-left: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .accordion .contentBx.active .accordion-content {
+        display: block;
+    }
     .accordion-content {
         padding: 10px;
     }
